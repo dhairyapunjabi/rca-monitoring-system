@@ -1,0 +1,16 @@
+image: ruby:2.5.0
+
+services:
+ - mongo:3.6
+
+variables:
+ MONGO_URI: “mongodb://mongo/rca_monitoring_system_test”
+
+before_script:
+ - apt-get update
+ - apt-get install -y nodejs
+ - bundle install
+
+test:
+ script:
+ - bundle exec rspec
