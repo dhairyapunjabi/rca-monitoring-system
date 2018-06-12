@@ -20,5 +20,10 @@ RSpec.describe Rca, type: :model do
       is_expected.to have_field(:users).of_type(Array)
     end
 
+    it "of status is string with default value 'Pending'" do
+      is_expected.to have_field(:status).of_type(String).with_default_value_of("Pending")
+    end
+
+
   end
 end
