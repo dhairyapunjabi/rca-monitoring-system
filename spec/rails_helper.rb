@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'mongoid-rspec'
 require 'support/factory_bot'
 require 'simplecov'
+SimpleCov.refuse_coverage_drop
 SimpleCov.start 'rails'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
