@@ -24,6 +24,8 @@ RSpec.describe Rca, type: :model do
       is_expected.to have_field(:status).of_type(String).with_default_value_of("Pending")
     end
 
-
+    it "of team_id is integer" do
+      is_expected.to have_field(:team_id).of_type(Integer)
+    end
   end
 end

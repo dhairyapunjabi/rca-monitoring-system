@@ -4,4 +4,5 @@ class Rca
   field :description, type: String
   field :users, type: Array
   field :status, type: String, default: "Pending"
+  field :team_id, type: Integer
 end
