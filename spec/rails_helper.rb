@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'mongoid-rspec'
+require 'support/factory_bot'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 
