@@ -5,4 +5,6 @@ class Rca
   field :users, type: Array
   field :status, type: String, default: "Pending"
   field :team_id, type: Integer
+
+  validates_presence_of :title
 end

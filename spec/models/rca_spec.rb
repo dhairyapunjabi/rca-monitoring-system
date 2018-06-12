@@ -28,4 +28,10 @@ RSpec.describe Rca, type: :model do
       is_expected.to have_field(:team_id).of_type(Integer)
     end
   end
+
+  describe "validation" do
+    it "should validate presence of title" do
+      is_expected.to validate_presence_of(:title)
+    end
+  end
 end
