@@ -11,5 +11,10 @@ RSpec.describe Rca, type: :model do
     it "of title is string" do
       is_expected.to have_field(:title).of_type(String)
     end
+
+    it "of description is string" do
+      is_expected.to have_field(:description).of_type(String)
+    end
+
   end
 end
