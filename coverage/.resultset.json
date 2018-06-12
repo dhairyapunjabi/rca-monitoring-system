@@ -1,0 +1,42 @@
+{
+  "RSpec": {
+    "coverage": {
+      "/Users/dhairyapunjabi/Work/rca_monitoring_system/app/helpers/application_helper.rb": [
+        1,
+        null
+      ],
+      "/Users/dhairyapunjabi/Work/rca_monitoring_system/app/models/rca.rb": [
+        1,
+        1,
+        null
+      ],
+      "/Users/dhairyapunjabi/Work/rca_monitoring_system/app/mailers/application_mailer.rb": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "/Users/dhairyapunjabi/Work/rca_monitoring_system/app/jobs/application_job.rb": [
+        0,
+        0
+      ],
+      "/Users/dhairyapunjabi/Work/rca_monitoring_system/app/controllers/application_controller.rb": [
+        0,
+        0
+      ],
+      "/Users/dhairyapunjabi/Work/rca_monitoring_system/app/channels/application_cable/connection.rb": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "/Users/dhairyapunjabi/Work/rca_monitoring_system/app/channels/application_cable/channel.rb": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "timestamp": 1528798605
+  }
+}
