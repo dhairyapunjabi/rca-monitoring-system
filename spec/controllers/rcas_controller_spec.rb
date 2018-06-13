@@ -24,4 +24,20 @@ RSpec.describe RcasController, type: :controller do
     end
   end
 
+  describe "new" do
+    it 'creates new object of type Rca' do
+      get :new
+      expect(assigns(:rca)).to be_an_instance_of(Rca)
+    end
+
+    it 'renders the new view' do
+      get :new
+      expect(response).to render_template(:new)
+    end
+
+    it 'returns 200 status code on success' do
+      get :new
+      expect(response).to have_http_status(200)
+    end
+  end
 end
