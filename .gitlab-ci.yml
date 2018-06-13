@@ -5,6 +5,7 @@ services:
 
 variables:
  MONGO_URI: “mongodb://mongo/rca_monitoring_system_test”
+ HOST_NAME: mongo
 
 before_script:
  - apt-get update

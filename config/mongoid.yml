@@ -9,7 +9,7 @@ test:
     default:
       database: rca_monitoring_system_test
       hosts:
-        - <%= "mongo:27017" %>
+        - <%= "#{ENV['HOST_NAME']}:27017" %>
       options:
         read:
           mode: :primary

@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'mongoid-rspec'
 require 'support/factory_bot'
+require 'database_cleaner'
 require 'simplecov'
 SimpleCov.refuse_coverage_drop
 SimpleCov.start 'rails'
