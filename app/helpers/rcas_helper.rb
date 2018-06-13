@@ -1,0 +1,2 @@
+module RcasHelper
+end
