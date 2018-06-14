@@ -82,19 +82,19 @@ RSpec.describe RcasController, type: :controller do
   describe "update" do
     it "saves the edited valid rca" do
       rca = FactoryBot.create(:rca)
-      put :update , params: { id: rca.id, rca: { title: "fghwaiuf", description: "vacb", users: "guowhfw", status: "ty", team_id: 321 } }
+      patch :update , params: { id: rca.id, rca: { title: "fghwaiuf", description: "vacb", users: "guowhfw", status: "ty", team_id: 321 } }
       expect(assigns(:rca)).to eq(rca)
     end
 
     it "renders the index if rca is valid" do
       rca = FactoryBot.create(:rca)
-      put :update , params: { id: rca.id, rca: { title: "fghwaiuf", description: "vacb", users: "guowhfw", status: "ty", team_id: 321 } }
+      patch :update , params: { id: rca.id, rca: { title: "fghwaiuf", description: "vacb", users: "guowhfw", status: "ty", team_id: 321 } }
       expect(response).to redirect_to(rcas_path)
     end
 
     it "renders the edit form if the rca is not valid" do
       rca = FactoryBot.create(:rca)
-      put :update , params: { id: rca.id, rca: { title: "", description: "vacb", users: "guowhfw", status: "ty", team_id: 321 } }
+      patch :update , params: { id: rca.id, rca: { title: "", description: "vacb", users: "guowhfw", status: "ty", team_id: 321 } }
       expect(response).to render_template(:edit)
     end
   end
