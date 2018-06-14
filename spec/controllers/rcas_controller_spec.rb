@@ -98,4 +98,17 @@ RSpec.describe RcasController, type: :controller do
       expect(response).to render_template(:edit)
     end
   end
+
+  describe "destroy" do
+    it "deletes a saved rca" do
+      rca = FactoryBot.create(:rca)
+      expect {delete :destroy , params: { id: rca.id}}.to change(Rca, :count).by(-1)
+    end
+
+    it "renders the index if rca is deleted" do
+      rca = FactoryBot.create(:rca)
+      delete  :destroy , params: { id: rca.id}
+      expect(response).to redirect_to(rcas_path)
+    end
+  end
 end

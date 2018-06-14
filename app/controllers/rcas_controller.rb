@@ -29,6 +29,12 @@ class RcasController < ApplicationController
     end
   end
 
+  def destroy
+    @rca = Rca.find(params[:id])
+    @rca.destroy
+    redirect_to rcas_path
+  end
+
   private
   def rca_params
     params.require(:rca).permit(:title, :description, :users, :status, :team_id)
