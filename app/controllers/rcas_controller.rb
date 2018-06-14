@@ -6,4 +6,18 @@ class RcasController < ApplicationController
   def new
     @rca = Rca.new
   end
+
+  def create
+    @rca = Rca.new(rca_params)
+    if @rca.save
+      redirect_to rcas_path
+    else
+      render 'new'
+    end
+  end
+
+  private
+  def rca_params
+    params.require(:rca).permit(:title, :description, :users, :status, :team_id)
+  end
 end

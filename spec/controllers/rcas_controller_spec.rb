@@ -25,19 +25,37 @@ RSpec.describe RcasController, type: :controller do
   end
 
   describe "new" do
-    it 'creates new object of type Rca' do
+    it "creates new object of type Rca" do
       get :new
       expect(assigns(:rca)).to be_an_instance_of(Rca)
     end
 
-    it 'renders the new view' do
+    it "renders the new view" do
       get :new
       expect(response).to render_template(:new)
     end
 
-    it 'returns 200 status code on success' do
+    it "returns 200 status code on success" do
       get :new
       expect(response).to have_http_status(200)
+    end
+  end
+
+  describe "create" do
+    it "saves newly created valid rca" do
+      expect do
+        post :create , params: { rca: { title: 'First rca', description: 'this is my first rca', users: "dada", status: 'Completed', team_id: 2}}
+      end.to change(Rca, :count).by(1)
+    end
+
+    it "renders the index if rca is valid" do
+      post :create , params: { rca: { title: 'First rca', description: 'this is my first rca', users: "dada", status: 'Completed', team_id: 2}}
+      expect(response).to redirect_to(rcas_path)
+    end
+
+    it "renders the new form if the rca is not valid" do
+      post :create , params: { rca: { title: '', description: 'this is my first rca', users: "dasda", status: 'Completed', team_id: 2}}
+      expect(response).to render_template(:new)
     end
   end
 end
