@@ -16,6 +16,10 @@ class RcasController < ApplicationController
     end
   end
 
+  def edit
+    @rca = Rca.find(params[:id])
+  end
+
   private
   def rca_params
     params.require(:rca).permit(:title, :description, :users, :status, :team_id)

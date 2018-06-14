@@ -58,4 +58,24 @@ RSpec.describe RcasController, type: :controller do
       expect(response).to render_template(:new)
     end
   end
+
+  describe "edit" do
+    it "allows editing of saved rcas" do
+      rca = FactoryBot.create(:rca)
+      get :edit , params: { id: rca.id}
+      expect(assigns(:rca)).to eq(rca)
+    end
+
+    it "renders the edit view" do
+      rca = FactoryBot.create(:rca)
+      get :edit , params: { id: rca.id}
+      expect(response).to render_template(:edit)
+    end
+
+    it "returns 200 status code on success" do
+      rca = FactoryBot.create(:rca)
+      get :edit , params: { id: rca.id}
+      expect(response).to have_http_status(200)
+    end
+  end
 end

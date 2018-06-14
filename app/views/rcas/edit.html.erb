@@ -1,0 +1,25 @@
+<%= form_with model: @rca,url: rcas_path, local: true do |form| %>
+  <p>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+  </p>
+  <p>
+    <%= form.label :description %><br>
+    <%= form.text_area :description %>
+  </p>
+  <p>
+    <%= form.label :users %><br>
+    <%= form.text_field :users %>
+  </p>
+  <p>
+    <%= form.label :status %><br>
+    <%= form.text_field :status %>
+  </p>
+  <p>
+    <%= form.label :team_id %><br>
+    <%= form.number_field :team_id %>
+  </p>
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
