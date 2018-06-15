@@ -33,7 +33,7 @@ group :test do
   gem 'capybara', '>= 2.15', '< 4.0'
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
-  gem 'mongoid-rspec' , github: 'mongoid/mongoid-rspec'
+  gem 'mongoid-rspec', github: 'mongoid/mongoid-rspec'
   gem 'simplecov', require: false
   gem 'database_cleaner'
 end

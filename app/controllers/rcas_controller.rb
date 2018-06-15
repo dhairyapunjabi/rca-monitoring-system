@@ -22,7 +22,7 @@ class RcasController < ApplicationController
 
   def update
     @rca = Rca.find(params[:id])
-    if  @rca.update(rca_params)
+    if @rca.update(rca_params)
       redirect_to rcas_path
     else
       render 'edit'
@@ -36,6 +36,7 @@ class RcasController < ApplicationController
   end
 
   private
+
   def rca_params
     params.require(:rca).permit(:title, :description, :users, :status, :team_id)
   end
