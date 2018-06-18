@@ -12,4 +12,10 @@ RSpec.describe Team, type: :model do
       is_expected.to have_field(:name).of_type(String)
     end
   end
+
+  describe 'validation' do
+    it 'should validate presence of name' do
+      is_expected.to validate_presence_of(:name)
+    end
+  end
 end
