@@ -17,5 +17,9 @@ RSpec.describe User, type: :model do
     it 'should validate presence of email' do
       is_expected.to validate_presence_of(:email)
     end
+
+    it 'should validate format of email' do
+       is_expected.to validate_format_of(:email)
+    end
   end
 end
