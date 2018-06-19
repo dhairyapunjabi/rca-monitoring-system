@@ -5,6 +5,7 @@ class RcasController < ApplicationController
 
   def new
     @rca = Rca.new
+    @teams = Team.all.to_a
   end
 
   def create
@@ -18,6 +19,7 @@ class RcasController < ApplicationController
 
   def edit
     @rca = Rca.find(params[:id])
+    @teams = Team.all.to_a
   end
 
   def update

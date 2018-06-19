@@ -17,7 +17,11 @@
   </p>
   <p>
     <%= form.label :team_id %><br>
-    <%= form.number_field :team_id %>
+    <%= form.select(:team_id) do %>
+      <% @teams.each do |team| %>
+        <option value = <%= team.id %> <% if team.id == @rca.team_id %> selected <% end %>><%= team.name %></option>
+      <% end %>
+    <% end %>
   </p>
   <p>
     <%= form.submit %>

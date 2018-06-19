@@ -1,7 +1,7 @@
 # This defines data-type and validations of a Rca document.
 class Rca
   include Mongoid::Document
-  belongs_to :team, autobuild: true
+  belongs_to :team
   field :title, type: String
   field :description, type: String
   field :users, type: String

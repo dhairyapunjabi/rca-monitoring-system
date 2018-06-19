@@ -30,6 +30,12 @@ RSpec.describe RcasController, type: :controller do
       expect(assigns(:rca)).to be_an_instance_of(Rca)
     end
 
+    it 'assigns all teams in an instance variable' do
+      teams = FactoryBot.create_list(:team, 3)
+      get :new
+      expect(assigns(:teams)).to eq(teams)
+    end
+
     it 'renders the new view' do
       get :new
       expect(response).to render_template(:new)
@@ -44,26 +50,34 @@ RSpec.describe RcasController, type: :controller do
   describe 'create' do
     it 'saves newly created valid rca' do
       expect do
-        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', users: 'dada', status: 'Completed', team_id: 2 } }
+        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', users: 'dada', status: 'Completed', team_id: FactoryBot.create(:team).id } }
       end.to change(Rca, :count).by(1)
     end
 
     it 'renders the index if rca is valid' do
-      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', users: 'dada', status: 'Completed', team_id: 2 } }
+      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', users: 'dada', status: 'Completed', team_id: FactoryBot.create(:team).id } }
       expect(response).to redirect_to(rcas_path)
     end
 
     it 'renders the new form if the rca is not valid' do
-      post :create, params: { rca: { title: '', description: 'this is my first rca', users: 'dasda', status: 'Completed', team_id: 2 } }
+      post :create, params: { rca: { title: '', description: 'this is my first rca', users: 'dasda', status: 'Completed', team_id: FactoryBot.create(:team).id } }
       expect(response).to render_template(:new)
     end
   end
 
   describe 'edit' do
-    it 'allows editing of saved rcas' do
+    it 'finds the rca to be edited' do
       rca = FactoryBot.create(:rca)
       get :edit, params: { id: rca.id }
       expect(assigns(:rca)).to eq(rca)
+    end
+
+    it 'assigns all teams in an instance variable' do
+      teams = FactoryBot.create_list(:team, 3)
+      rca = FactoryBot.create(:rca)
+      teams << rca.team
+      get :edit, params: { id: rca.id }
+      expect(assigns(:teams)).to eq(teams)
     end
 
     it 'renders the edit view' do
@@ -80,7 +94,7 @@ RSpec.describe RcasController, type: :controller do
   end
 
   describe 'update' do
-    it 'saves the edited valid rca' do
+    it 'finds the rca to be updated' do
       rca = FactoryBot.create(:rca)
       patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', users: 'guowhfw', status: 'ty', team_id: 321 } }
       expect(assigns(:rca)).to eq(rca)
@@ -88,7 +102,7 @@ RSpec.describe RcasController, type: :controller do
 
     it 'renders the index if rca is valid' do
       rca = FactoryBot.create(:rca)
-      patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', users: 'guowhfw', status: 'ty', team_id: 321 } }
+      patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', users: 'guowhfw', status: 'ty', team_id: FactoryBot.create(:team, name: 'allocations').id } }
       expect(response).to redirect_to(rcas_path)
     end
 

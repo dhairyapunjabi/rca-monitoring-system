@@ -1,12 +1,10 @@
 <h1>Listing rcas</h1>
-    <%= link_to 'New', new_rca_path,:class => 'btn btn-info btn-sm' %>
+<%= link_to 'New', new_rca_path, :class => 'btn btn-info btn-sm' %>
 <% @rcas.each do |rca| %>
   <div class = "well">
     <h3> <%= rca.title %></h3>
-    <%= link_to 'Edit', edit_rca_path(rca),:class => 'btn btn-info btn-sm' %>
-    <%= link_to 'Delete', rca_path(rca),
-              method: :delete,:class => 'btn btn-danger btn-xs',
-              data: { confirm: 'Are you sure?' } %>
+    <%= link_to 'Edit', edit_rca_path(rca), :class => 'btn btn-info btn-sm' %>
+    <%= link_to 'Delete', rca_path(rca), method: :delete,:class => 'btn btn-danger btn-xs', data: { confirm: 'Are you sure?' } %>
   </div>
 <% end %>
 
