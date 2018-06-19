@@ -23,15 +23,17 @@ RSpec.describe Rca, type: :model do
     it "of status is string with default value 'Pending'" do
       is_expected.to have_field(:status).of_type(String).with_default_value_of('Pending')
     end
-
-    it 'of team_id is integer' do
-      is_expected.to have_field(:team_id).of_type(Integer)
-    end
   end
 
   describe 'validation' do
     it 'should validate presence of title' do
       is_expected.to validate_presence_of(:title)
+    end
+  end
+
+  describe 'association' do
+    it 'should associate one rca with one team' do
+      is_expected.to belong_to(:team)
     end
   end
 end
