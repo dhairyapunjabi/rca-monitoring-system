@@ -18,4 +18,10 @@ RSpec.describe Team, type: :model do
       is_expected.to validate_presence_of(:name)
     end
   end
+
+  describe 'association' do
+    it 'should associate 1 team with many rcas' do
+      is_expected.to have_many(:rcas)
+    end
+  end
 end
