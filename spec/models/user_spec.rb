@@ -22,4 +22,10 @@ RSpec.describe User, type: :model do
        is_expected.to validate_format_of(:email)
     end
   end
+
+  describe 'association' do
+    it 'should associate 1 user with many rcas' do
+      is_expected.to have_many(:rcas)
+    end
+  end
 end
