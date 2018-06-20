@@ -30,8 +30,13 @@ class RcasController < ApplicationController
 
   def update
     @rca = Rca.find(params[:id])
-    if @rca.update(rca_params)
-      redirect_to rcas_path
+    @teams = Team.all.to_a
+    if @rca.user.update(user_params)
+      if @rca.update(rca_params)
+        redirect_to rcas_path
+      else
+        render 'edit'
+      end
     else
       render 'edit'
     end

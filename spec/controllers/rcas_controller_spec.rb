@@ -117,20 +117,35 @@ RSpec.describe RcasController, type: :controller do
   describe 'update' do
     it 'finds the rca to be updated' do
       rca = FactoryBot.create(:rca)
-      patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', status: 'ty', team_id: 321 } }
+      patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" } }
       expect(assigns(:rca)).to eq(rca)
     end
 
-    it 'renders the index if rca is valid' do
+    it 'renders the index if rca and user both are valid' do
       rca = FactoryBot.create(:rca)
-      patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team, name: 'allocations').id } }
+      patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team, name: 'allocations').id }, user: { email: "abcd@go-jek.com" } }
       expect(response).to redirect_to(rcas_path)
     end
 
     it 'renders the edit form if the rca is not valid' do
       rca = FactoryBot.create(:rca)
-      patch :update, params: { id: rca.id, rca: { title: '', description: 'vacb', status: 'ty', team_id: 321 } }
+      patch :update, params: { id: rca.id, rca: { title: '', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" } }
       expect(response).to render_template(:edit)
+    end
+
+    it 'renders the edit form if user is not valid even if rca is valid' do
+      rca = FactoryBot.create(:rca)
+      patch :update, params: { id: rca.id, rca: { title: 'abcde', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@yahoo.com" } }
+      expect(response).to render_template(:edit)
+    end
+
+    it 'assigns all teams in a instance variable' do
+      teams = FactoryBot.create_list(:team, 3)
+      rca = FactoryBot.create(:rca)
+      teams << rca.team
+      patch :update, params: { id: rca.id, rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
+      teams << Rca.all.last.team
+      expect(assigns(:teams)).to eq(teams)
     end
   end
 

@@ -8,8 +8,8 @@
     <%= form.text_area :description %>
   </p>
   <p>
-    <%= form.label :users %><br>
-    <%= form.text_field :users %>
+    <%= form.label "Your email" %><br>
+    <input name = "user[email]" type = "text" value = <%= @rca.user.email %> >
   </p>
   <p>
     <%= form.label :status %><br>
