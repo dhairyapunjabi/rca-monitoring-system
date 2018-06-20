@@ -48,20 +48,41 @@ RSpec.describe RcasController, type: :controller do
   end
 
   describe 'create' do
-    it 'saves newly created valid rca' do
+    it 'saves newly created valid rca and user' do
       expect do
-        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', users: 'dada', status: 'Completed', team_id: FactoryBot.create(:team).id } }
+        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
       end.to change(Rca, :count).by(1)
+
+      expect do
+        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
+      end.to change(User, :count).by(1)
     end
 
-    it 'renders the index if rca is valid' do
-      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', users: 'dada', status: 'Completed', team_id: FactoryBot.create(:team).id } }
+    it 'renders the index if rca and user is valid' do
+      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
       expect(response).to redirect_to(rcas_path)
     end
 
     it 'renders the new form if the rca is not valid' do
-      post :create, params: { rca: { title: '', description: 'this is my first rca', users: 'dasda', status: 'Completed', team_id: FactoryBot.create(:team).id } }
+      post :create, params: { rca: { title: '', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
       expect(response).to render_template(:new)
+    end
+
+    it 'renders the new form if the user is not valid even if rca is valid' do
+      post :create, params: { rca: { title: 'fadfa', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@gmail.com' } }
+      expect(response).to render_template(:new)
+    end
+
+    it 'associates created user with the created rca' do
+      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
+      expect(Rca.all.last.user).to eq(User.all.last)
+    end
+
+    it 'assigns all teams in a instance variable' do
+      teams = FactoryBot.create_list(:team, 3)
+      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
+      teams << Rca.all.last.team
+      expect(assigns(:teams)).to eq(teams)
     end
   end
 
@@ -96,19 +117,19 @@ RSpec.describe RcasController, type: :controller do
   describe 'update' do
     it 'finds the rca to be updated' do
       rca = FactoryBot.create(:rca)
-      patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', users: 'guowhfw', status: 'ty', team_id: 321 } }
+      patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', status: 'ty', team_id: 321 } }
       expect(assigns(:rca)).to eq(rca)
     end
 
     it 'renders the index if rca is valid' do
       rca = FactoryBot.create(:rca)
-      patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', users: 'guowhfw', status: 'ty', team_id: FactoryBot.create(:team, name: 'allocations').id } }
+      patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team, name: 'allocations').id } }
       expect(response).to redirect_to(rcas_path)
     end
 
     it 'renders the edit form if the rca is not valid' do
       rca = FactoryBot.create(:rca)
-      patch :update, params: { id: rca.id, rca: { title: '', description: 'vacb', users: 'guowhfw', status: 'ty', team_id: 321 } }
+      patch :update, params: { id: rca.id, rca: { title: '', description: 'vacb', status: 'ty', team_id: 321 } }
       expect(response).to render_template(:edit)
     end
   end

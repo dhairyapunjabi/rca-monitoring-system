@@ -16,10 +16,6 @@ RSpec.describe Rca, type: :model do
       is_expected.to have_field(:description).of_type(String)
     end
 
-    it 'of users is string' do
-      is_expected.to have_field(:users).of_type(String)
-    end
-
     it "of status is string with default value 'Pending'" do
       is_expected.to have_field(:status).of_type(String).with_default_value_of('Pending')
     end
@@ -34,6 +30,10 @@ RSpec.describe Rca, type: :model do
   describe 'association' do
     it 'should associate one rca with one team' do
       is_expected.to belong_to(:team)
+    end
+
+    it 'should associate one rca with one user' do
+      is_expected.to belong_to(:user)
     end
   end
 end
