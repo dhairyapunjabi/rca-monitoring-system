@@ -1,11 +1,4 @@
 GIT
-  remote: https://github.com/johnnyshields/validates_timeliness-mongoid.git
-  revision: 43b053328b8949b75fe80a1e2bc86c213fa22ad8
-  specs:
-    validates_timeliness-mongoid (0.1.0)
-      validates_timeliness (~> 4.0.0)
-
-GIT
   remote: https://github.com/mongoid/mongoid-rspec.git
   revision: e324e13e075e5ec7114414c8c3ec11c0978fbcaa
   specs:
@@ -14,6 +7,13 @@ GIT
       mongoid (>= 3.1)
       mongoid-compatibility (>= 0.5.1)
       rspec (~> 3.3)
+
+GIT
+  remote: https://github.com/pun97it/date_validator.git
+  revision: 47988d4e3278decc4334ef7a3f493f1196f8a0af
+  specs:
+    validates_timeliness-mongoid (0.1.0)
+      validates_timeliness (~> 4.0.0)
 
 GEM
   remote: https://rubygems.org/
