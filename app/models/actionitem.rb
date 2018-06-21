@@ -1,5 +1,6 @@
 class Actionitem
   include Mongoid::Document
+  belongs_to :rca
   field :name, type: String
   field :complete_by, type: Date
 

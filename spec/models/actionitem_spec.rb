@@ -27,9 +27,15 @@ RSpec.describe Actionitem, type: :model do
     end
 
     it 'should verify that complete_by is on or after today' do
-      expect{ Actionitem.create(name: "Test", complete_by: Date.today+1) }.to change(Actionitem, :count).by(1)
-      expect{ Actionitem.create(name: "Test", complete_by: Date.today) }.to change(Actionitem, :count).by(1)
-      expect{ Actionitem.create(name: "Test", complete_by: Date.today-1) }.to change(Actionitem, :count).by(0)
+      expect{ Actionitem.create(name: 'Test', complete_by: Date.today+1, rca_id: FactoryBot.create(:rca).id) }.to change(Actionitem, :count).by(1)
+      expect{ Actionitem.create(name: 'Test', complete_by: Date.today, rca_id: FactoryBot.create(:rca).id) }.to change(Actionitem, :count).by(1)
+      expect{ Actionitem.create(name: 'Test', complete_by: Date.today-1, rca_id: FactoryBot.create(:rca).id) }.to change(Actionitem, :count).by(0)
+    end
+  end
+
+  describe 'association' do
+    it 'should associate one action item with one rca' do
+      is_expected.to belong_to(:rca)
     end
   end
 end
