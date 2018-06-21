@@ -11,6 +11,10 @@ RSpec.describe Actionitem, type: :model do
     it 'of name is string' do
       is_expected.to have_field(:name).of_type(String)
     end
+
+    it 'of complete_by is string' do
+      is_expected.to have_field(:complete_by).of_type(Date)
+    end
   end
 end
 
