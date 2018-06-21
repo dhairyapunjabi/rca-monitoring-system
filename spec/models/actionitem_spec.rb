@@ -25,5 +25,11 @@ RSpec.describe Actionitem, type: :model do
     it 'should validate presence of complete_by' do
       is_expected.to validate_presence_of(:complete_by)
     end
+
+    it 'should verify that complete_by is on or after today' do
+      expect{ Actionitem.create(name: "Test", complete_by: Date.today+1) }.to change(Actionitem, :count).by(1)
+      expect{ Actionitem.create(name: "Test", complete_by: Date.today) }.to change(Actionitem, :count).by(1)
+      expect{ Actionitem.create(name: "Test", complete_by: Date.today-1) }.to change(Actionitem, :count).by(0)
+    end
   end
 end

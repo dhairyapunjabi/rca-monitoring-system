@@ -1,8 +1,15 @@
 GIT
-  remote: https://github.com/mongoid/mongoid-rspec.git
-  revision: 68c95b133be1a1482fe882e39afd33262147d1f4
+  remote: https://github.com/johnnyshields/validates_timeliness-mongoid.git
+  revision: 43b053328b8949b75fe80a1e2bc86c213fa22ad8
   specs:
-    mongoid-rspec (4.0.1)
+    validates_timeliness-mongoid (0.1.0)
+      validates_timeliness (~> 4.0.0)
+
+GIT
+  remote: https://github.com/mongoid/mongoid-rspec.git
+  revision: e324e13e075e5ec7114414c8c3ec11c0978fbcaa
+  specs:
+    mongoid-rspec (4.0.2)
       activesupport (>= 3.0.0)
       mongoid (>= 3.1)
       mongoid-compatibility (>= 0.5.1)
@@ -58,7 +65,7 @@ GEM
       io-like (~> 0.3.0)
     arel (9.0.0)
     ast (2.4.0)
-    autoprefixer-rails (8.6.2)
+    autoprefixer-rails (8.6.3)
       execjs
     bindex (0.5.0)
     bootsnap (1.3.0)
@@ -249,7 +256,7 @@ GEM
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
       spring (>= 1.2, < 3.0)
-    sprockets (3.7.1)
+    sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
     sprockets-rails (3.2.1)
@@ -259,6 +266,7 @@ GEM
     thor (0.20.0)
     thread_safe (0.3.6)
     tilt (2.0.8)
+    timeliness (0.3.8)
     turbolinks (5.1.1)
       turbolinks-source (~> 5.1)
     turbolinks-source (5.1.0)
@@ -267,6 +275,8 @@ GEM
     uglifier (4.1.11)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.4.0)
+    validates_timeliness (4.0.2)
+      timeliness (~> 0.3.7)
     web-console (3.6.2)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -310,6 +320,7 @@ DEPENDENCIES
   turbolinks (~> 5)
   tzinfo-data
   uglifier (>= 1.3.0)
+  validates_timeliness-mongoid!
   web-console (>= 3.3.0)
 
 RUBY VERSION
