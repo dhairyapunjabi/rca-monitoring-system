@@ -21,6 +21,9 @@ RSpec.describe Actionitem, type: :model do
     it 'should validate presence of name' do
       is_expected.to validate_presence_of(:name)
     end
+
+    it 'should validate presence of complete_by' do
+      is_expected.to validate_presence_of(:complete_by)
+    end
   end
 end
-
