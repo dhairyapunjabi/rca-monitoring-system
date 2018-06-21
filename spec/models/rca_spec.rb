@@ -35,5 +35,9 @@ RSpec.describe Rca, type: :model do
     it 'should associate one rca with one user' do
       is_expected.to belong_to(:user)
     end
+
+    it 'should associate one rca with many action items' do
+      is_expected.to have_many(:actionitems)
+    end
   end
 end
