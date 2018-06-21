@@ -16,5 +16,11 @@ RSpec.describe Actionitem, type: :model do
       is_expected.to have_field(:complete_by).of_type(Date)
     end
   end
+
+  describe 'validation' do
+    it 'should validate presence of name' do
+      is_expected.to validate_presence_of(:name)
+    end
+  end
 end
 
