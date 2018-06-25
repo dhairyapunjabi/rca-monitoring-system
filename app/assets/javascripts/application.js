@@ -3,4 +3,6 @@
 //= require bootstrap-sprockets
 //= require rails-ujs
 //= require turbolinks
+//= require jquery.easing
+//= require datatables
 //= require_tree .

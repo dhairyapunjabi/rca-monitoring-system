@@ -17,6 +17,9 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'bootstrap', '~>4.1.1'
 gem 'jquery-rails'
 gem 'validates_timeliness-mongoid', github: 'pun97it/date_validator'
+gem 'font-awesome-rails'
+gem 'jquery-easing-rails', '~> 0.0.2'
+gem 'jquery-datatables', '~> 1.10', '>= 1.10.19'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
