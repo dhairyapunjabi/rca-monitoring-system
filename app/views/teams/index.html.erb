@@ -1,0 +1,7 @@
+<h1>Listing teams</h1>
+<% @teams.each do |team| %>
+  <div class = "well">
+    <h3> <%= team.name %></h3>
+    <%= link_to 'Show', team_path(team), :class => 'btn btn-info btn-sm' %>
+  </div>
+<% end %>

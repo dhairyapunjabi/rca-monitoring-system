@@ -1,0 +1,17 @@
+<div class ="well">
+  <h1>
+    <%= @team.name %>
+  </h1>
+  <table>
+    <% @team.rcas.each do |rca| %>
+      <tr><td> <p>
+      <ul style="list-style-type:disc"><li> <%=link_to rca.title ,edit_rca_path(rca)%></li></ul>
+      </p></td> </tr>
+      <tr><td>
+        <%end%>
+        <tr></tr>
+      </div>
+   </table>
+  <%= link_to 'Back', teams_path %>
+
+
