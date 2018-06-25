@@ -23,4 +23,24 @@ RSpec.describe TeamsController, type: :controller do
       expect(response).to have_http_status(200)
     end
   end
+
+  describe 'show' do
+    it 'finds the team to be shown' do
+      team = FactoryBot.create(:team)
+      get :show, params: {id: team.id}
+      expect(assigns(:team)).to eq(team)
+    end
+
+    it' renders the show view' do
+      team = FactoryBot.create(:team)
+      get :show, params: {id: team.id}
+      expect(response).to render_template(:show)
+    end
+
+    it 'returns 200 status code on success' do
+      team = FactoryBot.create(:team)
+      get :show, params: {id: team.id}
+      expect(response).to have_http_status(200)
+    end
+  end
 end
