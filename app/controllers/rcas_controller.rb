@@ -48,6 +48,10 @@ class RcasController < ApplicationController
     redirect_to rcas_path
   end
 
+  def show
+    @rca= Rca.find(params[:id])
+  end
+
   private
 
   def rca_params

@@ -161,4 +161,23 @@ RSpec.describe RcasController, type: :controller do
       expect(response).to redirect_to(rcas_path)
     end
   end
+
+  describe 'show' do
+    it 'finds the rca to be shown' do
+      rca = FactoryBot.create(:rca)
+      get :show, params: { id: rca.id }
+    end
+
+    it 'renders the show view' do
+      rca = FactoryBot.create(:rca)
+      get :show, params: { id: rca.id }
+      expect(response).to render_template(:show)
+    end
+
+    it 'returns 200 status code on success' do
+      rca = FactoryBot.create(:rca)
+      get :show, params: { id: rca.id }
+      expect(response).to have_http_status(200)
+    end
+  end
 end
