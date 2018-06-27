@@ -24,7 +24,7 @@
             <% @team.rcas.each do |rca| %>
               <tr>
                 <td>
-                  <%= link_to rca.title, edit_rca_path(rca)%></td>
+                  <%= link_to rca.title, rca_path(rca)%></td>
                 <td>
                   <%= rca.user.email %></td>
                 <td>
