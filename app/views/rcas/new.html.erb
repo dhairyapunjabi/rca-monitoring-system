@@ -1,4 +1,4 @@
-<div class = 'container border border-dark' style = "border-width: 5px !important; font-family: 'Comic Sans MS'; padding:50px; padding-left:75px">
+<div class = 'container border border-dark' style = "border-width: 5px !important; font-family: 'Verdana'; padding:50px; padding-left:75px">
   <h2>New RCA</h2>
   <div class =  'border-top border-danger' style = 'border-width:3px !important; padding-top:40px'>
     <%= form_with model: @rca, local: true do |form| %>
@@ -10,14 +10,14 @@
       </div>
       <div class = 'row'>
         <p>
-          <%= form.label :description, style: 'font-size:1.3vw' %><br>
-          <%= form.text_area :description, style: 'resize: both', rows:'10', cols:'100'%>
+          <%= form.label "Your email", style: 'font-size:1.3vw' %><br>
+          <input name = "user[email]" type = "text"  style = 'border-top:0; border-right:0; border-left:0; outline:none;' placeholder = 'Enter your email here that should be of the form xyz@go-jek.com' size = 100>
         </p>
       </div>
       <div class = 'row'>
         <p>
-          <%= form.label "Your email", style: 'font-size:1.3vw' %><br>
-          <input name = "user[email]" type = "text"  style = 'border-top:0; border-right:0; border-left:0; outline:none;' placeholder = 'Enter your email here that should be of the form xyz@go-jek.com' size = 100>
+          <%= form.label :description, style: 'font-size:1.3vw' %><br>
+          <%= form.text_area :description, style: 'resize: both', rows:'10', cols:'100'%>
         </p>
       </div>
       <div class = 'row'>
