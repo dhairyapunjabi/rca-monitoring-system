@@ -13,6 +13,14 @@
           <span class="nav-link-text"><%= link_to "New RCA", new_rca_path %></span>
         </div>
       </li>
+      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="All teams">
+        <div class="nav-link">
+          <%= link_to teams_path, method: :get do %>
+            <i class = 'fa fa-solid fa-users'></i>
+          <% end %>
+          <span class="nav-link-text"><%= link_to "Teams", teams_path, method: :get %></span>
+        </div>
+      </li>
     </ul>
     <ul class="navbar-nav sidenav-toggler">
       <li class="nav-item">
