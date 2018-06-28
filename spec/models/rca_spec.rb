@@ -23,7 +23,7 @@ RSpec.describe Rca, type: :model do
 
   describe 'validation' do
     it 'should validate presence of title' do
-      is_expected.to validate_presence_of(:title)
+      is_expected.to validate_presence_of(:title).with_message("can't be blank")
     end
   end
 

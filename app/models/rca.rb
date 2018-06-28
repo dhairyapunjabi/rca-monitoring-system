@@ -8,5 +8,5 @@ class Rca
   field :description, type: String
   field :status, type: String, default: 'Pending'
 
-  validates_presence_of :title
+  validates :title, presence: { message: "can't be blank" }
 end

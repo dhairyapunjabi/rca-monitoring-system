@@ -3,5 +3,5 @@ class User
   has_many :rcas
   field :email, type: String
 
-  validates :email, presence: true, format: { with: /([a-zA-Z0-9]+)([\.{1}])?([a-zA-Z0-9]+)\@go-jek([\.])com/ }
+  validates :email, presence: { message: "can't be blank" }, format: { with: /([a-zA-Z0-9]+)([\.{1}])?([a-zA-Z0-9]+)\@go-jek([\.])com/, message: 'is invalid' }
 end

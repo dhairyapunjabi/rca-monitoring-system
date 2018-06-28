@@ -15,11 +15,11 @@ RSpec.describe User, type: :model do
 
   describe 'validation' do
     it 'should validate presence of email' do
-      is_expected.to validate_presence_of(:email)
+      is_expected.to validate_presence_of(:email).with_message("can't be blank")
     end
 
     it 'should validate format of email' do
-       is_expected.to validate_format_of(:email)
+      is_expected.to validate_format_of(:email).with_message("is invalid")
     end
   end
 
