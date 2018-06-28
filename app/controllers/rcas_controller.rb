@@ -6,6 +6,7 @@ class RcasController < ApplicationController
   def new
     @rca = Rca.new
     @teams = Team.all.to_a
+    @rca.user = User.new
   end
 
   def create

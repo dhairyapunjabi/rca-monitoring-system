@@ -30,6 +30,12 @@ RSpec.describe RcasController, type: :controller do
       expect(assigns(:rca)).to be_an_instance_of(Rca)
     end
 
+    it 'creates new object of type User associated with rca being created' do
+      get :new
+      expect(assigns(:rca).user).to be_an_instance_of(User)
+    end
+
+
     it 'assigns all teams in an instance variable' do
       teams = FactoryBot.create_list(:team, 3)
       get :new
