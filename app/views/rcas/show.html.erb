@@ -1,41 +1,42 @@
 <div class = 'container border border-dark' style = "border-width: 5px !important; font-family: 'Verdana'; padding:50px; padding-left:75px">
   <h2>RCA Report</h2>
-  <div class =  'border-top border-danger' style = 'border-width:3px !important; padding-top:40px'>
-    <%= form_with model: @rca, local: true do |form| %>
-      <div class = 'row'>
-        <p>
-          <%= form.label 'Title:', style: 'font-size:1.3vw; color:green'%><br>
-          <%= @rca.title %>
-        </p>
-      </div>
-  <div class =  'border-top' style = 'border-width:1.5px !important; padding-top:40px'>
-      <div class = 'row'>
-        <p>
-          <%= form.label 'Email:', style: 'font-size:1.3vw; color:green' %><br>
-          <%= @rca.user.email %>
-        </p>
-      </div>
-  <div class =  'border-top' style = 'border-width:1.5px !important; padding-top:40px'>
-      <div class = 'row'>
-        <p>
-          <%= form.label 'Description:', style: 'font-size:1.3vw; color:green' %><br>
-          <%= @rca.description %>
-        </p>
-      </div>
-  <div class =  'border-top' style = 'border-width:1.5px !important; padding-top:40px'>
-      <div class = 'row'>
-        <p>
-          <%= form.label 'Status:', style: 'font-size:1.3vw; color:green'%><br>
-          <%= @rca.status %>
-        </p>
-      </div>
-  <div class =  'border-top' style = 'border-width:1.5px !important; padding-top:40px'>
-      <div class = 'row'>
-        <p>
-          <%= form.label 'Team:', style: 'font-size:1.3vw; color:green' %><br>
-          <%= @rca.team.name %>
-        </p>
-      </div>
-    <% end %>
-  </div>
+  <div class =  'border-top border-danger' style = 'border-width:3px !important; padding-top:40px'></div>
+  <%= form_with model: @rca, local: true do |form| %>
+    <div class = 'row'>
+      <p>
+        <%= form.label 'Title:', style: 'font-size:1.3vw; color:green'%><br>
+        <%= @rca.title %>
+      </p>
+    </div>
+    <div class =  'border-top' style = 'border-width:1.5px !important; padding-top:40px'></div>
+    <div class = 'row'>
+      <p>
+        <%= form.label 'Email:', style: 'font-size:1.3vw; color:green' %><br>
+        <%= @rca.user.email %>
+      </p>
+    </div>
+    <div class =  'border-top' style = 'border-width:1.5px !important; padding-top:40px'></div>
+    <div class = 'row'>
+      <p>
+        <%= form.label 'Description:', style: 'font-size:1.3vw; color:green' %><br>
+        <%= @rca.description %>
+      </p>
+    </div>
+    <div class =  'border-top' style = 'border-width:1.5px !important; padding-top:40px'></div>
+    <div class = 'row'>
+      <p>
+        <%= form.label 'Status:', style: 'font-size:1.3vw; color:green'%><br>
+        <%= @rca.status %>
+      </p>
+    </div>
+    <div class =  'border-top' style = 'border-width:1.5px !important; padding-top:40px'></div>
+    <div class = 'row'>
+      <p>
+        <%= form.label 'Team:', style: 'font-size:1.3vw; color:green' %><br>
+        <%= @rca.team.name %>
+      </p>
+    </div>
+  <% end %>
 </div>
+<br>
+<div class = 'container' style = 'margin:auto'><%= link_to "Edit", edit_rca_path(@rca), class: 'btn btn-info' %></div>
