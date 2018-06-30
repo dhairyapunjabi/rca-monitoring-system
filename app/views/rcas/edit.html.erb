@@ -2,6 +2,18 @@
   <h2>Edit RCA</h2>
   <div class =  'border-top border-danger' style = 'border-width:3px !important; padding-top:40px'>
     <%= form_with model: @rca, local: true do |form| %>
+      <% if (@rca.errors.any?) %>
+        <div class="alert alert-danger">
+          <%=  @rca.errors.full_messages.first %></div>
+        <% if (@rca.user.errors[:email].any?) %>
+          <div class="alert alert-danger">
+            <%=  @rca.user.errors.full_messages[1]%></div>
+        <%end%>
+      <% elsif (@rca.user.errors[:email].any?) %>
+        <div class="alert alert-danger">
+          <%=  @rca.user.errors.full_messages.first%></div>
+      <%end%>
+
       <div class = 'row'>
         <p>
           <%= form.label :title, style: 'font-size:1.3vw;'%><br>
@@ -11,7 +23,7 @@
       <div class = 'row'>
         <p>
           <%= form.label "Your email", style: 'font-size:1.3vw' %><br>
-          <input name = "user[email]" type = "text"  style = 'border-top:0; border-right:0; border-left:0; outline:none;' placeholder = 'Enter your email here that should be of the form xyz@go-jek.com' value = <%= @rca.user.email %> size = 100>
+          <input name = "user[email]" type = "text"  style = 'border-top:0; border-right:0; border-left:0; outline:none;' placeholder = 'Enter your email here that should be of the form xyz@go-jek.com' size = 100  value = <%= @rca.user.email %> >
         </p>
       </div>
       <div class = 'row'>
