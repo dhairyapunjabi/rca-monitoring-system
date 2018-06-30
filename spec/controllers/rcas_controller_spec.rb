@@ -133,6 +133,17 @@ RSpec.describe RcasController, type: :controller do
       expect(assigns(:rca)).to eq(rca)
     end
 
+    it 'finds or create valid user' do
+      rca = FactoryBot.create(:rca)
+      expect do
+        patch :update, params: { id: rca.id, rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
+      end.to change(User, :count).by(1)
+
+      expect do
+        patch :update, params: { id: rca.id, rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
+      end.to change(User, :count).by(0)
+    end
+
     it 'renders the index if rca and user both are valid' do
       rca = FactoryBot.create(:rca)
       patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team, name: 'allocations').id }, user: { email: "abcd@go-jek.com" } }

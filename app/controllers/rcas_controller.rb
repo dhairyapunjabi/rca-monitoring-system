@@ -27,13 +27,11 @@ class RcasController < ApplicationController
 
   def update
     @rca = Rca.find(params[:id])
+    @rca.assign_attributes(rca_params)
+    @rca.user = User.find_or_initialize_by(user_params)
     @teams = Team.all.to_a
-    if @rca.user.update(user_params)
-      if @rca.update(rca_params)
-        redirect_to rcas_path
-      else
-        render 'edit'
-      end
+    if (@rca.user.update && @rca.update)
+      redirect_to rcas_path
     else
       render 'edit'
     end
