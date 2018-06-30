@@ -11,14 +11,10 @@ class RcasController < ApplicationController
 
   def create
     @rca = Rca.new(rca_params)
-    @rca.user = User.new(user_params)
+    @rca.user = User.find_or_initialize_by(user_params)
     @teams = Team.all.to_a
-    if @rca.user.save
-      if @rca.save
-        redirect_to rcas_path
-      else
-        render 'new'
-      end
+    if (@rca.user.save && @rca.save)
+      redirect_to rcas_path
     else
       render 'new'
     end

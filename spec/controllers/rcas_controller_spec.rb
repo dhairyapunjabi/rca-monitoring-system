@@ -54,14 +54,20 @@ RSpec.describe RcasController, type: :controller do
   end
 
   describe 'create' do
-    it 'saves newly created valid rca and user' do
+    it 'saves newly created valid rca' do
       expect do
         post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
       end.to change(Rca, :count).by(1)
+    end
 
+    it 'finds or create valid user' do
       expect do
         post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
       end.to change(User, :count).by(1)
+
+      expect do
+        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
+      end.to change(User, :count).by(0)
     end
 
     it 'renders the index if rca and user is valid' do
