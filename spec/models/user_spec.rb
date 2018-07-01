@@ -21,6 +21,10 @@ RSpec.describe User, type: :model do
     it 'should validate format of email' do
       is_expected.to validate_format_of(:email).with_message("is invalid")
     end
+
+    it 'should validate length of email' do
+      is_expected.to validate_length_of(:email).with_maximum(30)
+    end
   end
 
   describe 'association' do
