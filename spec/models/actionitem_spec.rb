@@ -15,6 +15,10 @@ RSpec.describe Actionitem, type: :model do
     it 'of complete_by is string' do
       is_expected.to have_field(:complete_by).of_type(Date)
     end
+
+    it "of status is string with default value 'Pending'" do
+      is_expected.to have_field(:status).of_type(String).with_default_value_of('Pending')
+    end
   end
 
   describe 'validation' do
