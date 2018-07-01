@@ -29,8 +29,13 @@ RSpec.describe Actionitem, type: :model do
       is_expected.to validate_presence_of(:name)
     end
 
-    it 'should validate presence of complete_by' do
-      is_expected.to validate_presence_of(:complete_by)
+    it 'should validate presence of complete_by if and only if status is Pending' do
+      actionitem1 = FactoryBot.build(:actionitem)
+      actionitem1.valid?
+      expect(actionitem1.errors[:complete_by]).to include("can't be blank")
+      actionitem2 = FactoryBot.build(:actionitem, status: "Completed")
+      actionitem2.valid?
+      expect(actionitem2.errors[:complete_by]).to_not include("can't be blank")
     end
 
     it 'should verify that complete_by is on or after today' do
