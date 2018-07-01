@@ -43,6 +43,15 @@ RSpec.describe Actionitem, type: :model do
       expect{ Actionitem.create(name: 'Test', complete_by: Date.today, rca_id: FactoryBot.create(:rca).id) }.to change(Actionitem, :count).by(1)
       expect{ Actionitem.create(name: 'Test', complete_by: Date.today-1, rca_id: FactoryBot.create(:rca).id) }.to change(Actionitem, :count).by(0)
     end
+
+    it 'should validate presence of completed_on if and only if status is Completed' do
+      actionitem1 = FactoryBot.build(:actionitem, status: "Completed")
+      actionitem1.valid?
+      expect(actionitem1.errors[:completed_on]).to include("can't be blank")
+      actionitem2 = FactoryBot.build(:actionitem)
+      actionitem2.valid?
+      expect(actionitem2.errors[:completed_by]).to_not include("can't be blank")
+    end
   end
 
   describe 'association' do
