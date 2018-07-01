@@ -52,6 +52,12 @@ RSpec.describe Actionitem, type: :model do
       actionitem2.valid?
       expect(actionitem2.errors[:completed_by]).to_not include("can't be blank")
     end
+
+    it 'should verify that completed_on is on or before today' do
+      expect{ Actionitem.create(name: 'Test', completed_on: Date.today+1, rca_id: FactoryBot.create(:rca).id) }.to change(Actionitem, :count).by(0)
+      expect{ Actionitem.create(name: 'Test', completed_on: Date.today, rca_id: FactoryBot.create(:rca).id, status: 'Completed') }.to change(Actionitem, :count).by(1)
+      expect{ Actionitem.create(name: 'Test', completed_on: Date.today-1, rca_id: FactoryBot.create(:rca).id, status: 'Completed') }.to change(Actionitem, :count).by(1)
+    end
   end
 
   describe 'association' do
