@@ -25,6 +25,11 @@ RSpec.describe Rca, type: :model do
     it 'should validate presence of title' do
       is_expected.to validate_presence_of(:title).with_message("can't be blank")
     end
+
+    it 'should validate length of title' do
+      is_expected.to validate_length_of(:title).within(3..50)
+    end
+
   end
 
   describe 'association' do
