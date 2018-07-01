@@ -16,34 +16,47 @@
 
     <div class = 'row'>
       <p>
-        <%= form.label :title, style: 'font-size:1.3vw;'%><br>
-        <%= form.text_field :title, size: '100', style: 'border-top:0; border-right:0; border-left:0; outline:none;', placeholder: 'Title for the RCA'%>
+        <%= form.label :title, style: 'font-size:20px;'%><br>
+        <%= form.text_field :title, class: 'form-control', size: '100', style: 'border-top:0; border-right:0; border-left:0; outline:none; box-shadow:none !important', placeholder: 'Title for the RCA'%>
       </p>
     </div>
+
     <div class = 'row'>
       <p>
-        <%= form.label "Your email", style: 'font-size:1.3vw' %><br>
-        <input name = "user[email]" type = "text"  style = 'border-top:0; border-right:0; border-left:0; outline:none;' placeholder = 'xyz@go-jek.com' size = 100 value = <%= @rca.user.email %> >
+        <%= form.label "Your email", style: 'font-size:20px' %><br>
+        <input name = "user[email]" type = "text" class = 'form-control' style = 'border-top:0; border-right:0; border-left:0; outline:none; box-shadow:none !important' placeholder = 'xyz@go-jek.com' size = 100 value = <%= @rca.user.email %> >
       </p>
     </div>
+
     <div class = 'row'>
       <p>
-        <%= form.label :description, style: 'font-size:1.3vw' %><br>
-        <%= form.text_area :description, style: 'resize: both', rows:'10', cols:'100'%>
+        <%= form.label :description, style: 'font-size:20px' %><br>
+        <%= form.text_area :description, class: 'form-control', style: 'resize: both; box-shadow:none !important', rows:'10', cols:'100'%>
       </p>
     </div>
+
+    <div class = container id = 'actionitem'>
     <div class = 'row'>
       <p>
-        <%= form.label :status, style: 'font-size:1.3vw'%><br>
+        <input name = 'actionitem[name]' type = 'text' class = 'form-control'>
+        <input type = 'button' value = 'New Action Item' onclick = 'createNewActionItem()'>
+      </p>
+    </div>
+  </div>
+
+    <div class = 'row'>
+      <p>
+        <%= form.label :status, style: 'font-size:20px'%><br>
         <%= form.select(:status) do %>
           <option value = 'Pending'>Pending</option>
           <option value = 'Completed'>Completed</option>
         <% end %>
       </p>
     </div>
+
     <div class = 'row'>
       <p>
-        <%= form.label :team_id, style: 'font-size:1.3vw' %><br>
+        <%= form.label :team_id, style: 'font-size:20px' %><br>
         <%= form.select(:team_id) do %>
           <% @teams.each do |team| %>
             <option value = <%= team.id %>><%= team.name %></option>
@@ -51,11 +64,29 @@
         <% end %>
       </p>
     </div>
+
     <br><br>
+
     <div class= 'row'>
       <p>
-        <%= form.submit class: 'btn btn-success' %>
+        <%= form.submit 'Create RCA', class: 'btn btn-success' %>
       </p>
     </div>
   <% end %>
 </div>
+
+<script>
+  function createNewActionItem() {
+    var parent = document.getElementById('actionitem')
+    var inputfield = document.createElement('INPUT');
+    inputfield.setAttribute('type','text');
+    inputfield.setAttribute('name','actionitem[name]');
+    inputfield.className = 'form-control'
+    var row = document.createElement('DIV');
+    row.className = 'row';
+    var paragraph = document.createElement('P');
+    paragraph.appendChild(inputfield);
+    row.appendChild(paragraph);
+    parent.appendChild(row);
+    }
+  </script>
