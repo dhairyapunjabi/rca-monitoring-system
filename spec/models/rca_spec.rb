@@ -44,5 +44,9 @@ RSpec.describe Rca, type: :model do
     it 'should associate one rca with many action items' do
       is_expected.to have_many(:actionitems)
     end
+
+    it 'should associate many rcas with many tags' do
+      is_expected.to have_and_belong_to_many(:tags)
+    end
   end
 end
