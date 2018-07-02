@@ -21,6 +21,14 @@
           <span class="nav-link-text"><%= link_to "Teams", teams_path, method: :get %></span>
         </div>
       </li>
+      <li class="nav-item" data-toggle="tooltip" data-placement="right" title="All tags">
+        <div class="nav-link">
+          <%= link_to tags_path, method: :get do %>
+            <i class="fa fa-solid fa-tags"></i>
+          <% end %>
+          <span class="nav-link-text"><%= link_to "Tags", tags_path, method: :get  %></span>
+        </div>
+      </li>
     </ul>
     <ul class="navbar-nav sidenav-toggler">
       <li class="nav-item">
