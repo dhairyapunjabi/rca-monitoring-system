@@ -21,7 +21,7 @@
             <tr>
               <td>
               <i class = 'fa fa-folder-open'></i>
-              <%= link_to team.name, team_path(team)%></td>
+              <%= link_to team.name, team_path(team), method: :get %></td>
             </tr>
           <% end %>
         </tbody>

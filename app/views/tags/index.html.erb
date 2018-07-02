@@ -21,7 +21,7 @@
             <tr>
               <td>
               <i class = 'fa fa-tag'></i>
-              <%= link_to tag.name, tag_path(tag)%></td>
+              <%= link_to tag.name, tag_path(tag), method: :get %></td>
             </tr>
           <% end %>
         </tbody>
