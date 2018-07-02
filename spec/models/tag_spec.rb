@@ -22,5 +22,11 @@ RSpec.describe Tag, type: :model do
       is_expected.to validate_length_of(:name).with_maximum(25)
     end
   end
+
+  describe 'association' do
+    it 'should associate many tags with many rcas' do
+      is_expected.to have_and_belong_to_many(:rcas)
+    end
+  end
 end
 
