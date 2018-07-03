@@ -67,6 +67,8 @@
 
     <br><br>
 
+    <input type = 'hidden' id = 'list' name = 'actionitem[list]'>
+
     <div class= 'row'>
       <p>
         <%= form.submit 'Create RCA', class: 'btn btn-success' %>
@@ -88,5 +90,24 @@
     paragraph.appendChild(inputfield);
     row.appendChild(paragraph);
     parent.appendChild(row);
+    addAndUpdateActionItems();
+  }
+
+  var actionitems = new Array();
+    var actionitemsvalues = new Array();
+
+  function addAndUpdateActionItems() {
+    var parent = document.getElementById('actionitem')
+    var totalactionitems = parent.querySelectorAll('.form-control');
+    for (i = 0; i < actionitems.length; i++){
+      actionitems[i] = totalactionitems[i];
+    }
+    actionitems.push(totalactionitems[totalactionitems.length-1]);
+    for (i = 0; i < actionitems.length; i++){
+      var object = new Object();
+      object.name = actionitems[i].value;
+      actionitemsvalues[i] = object;
+    }
+    document.getElementById('list').value = JSON.stringify(actionitemsvalues);
   }
 </script>
