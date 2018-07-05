@@ -1,7 +1,7 @@
 <div class = 'container border border-dark' style = "border-width: 5px !important; font-family: 'Verdana'; padding:50px; padding-left:75px">
   <h2>New RCA</h2>
   <div class =  'border-top border-danger' style = 'border-width:3px !important; padding-top:40px'></div>
-  <%= form_with model: @rca, local: true do |form| %>
+  <%= form_with model: @rca, local: true, id: 'form_id' do |form| %>
     <% if (@rca.errors.any?) %>
       <div class="alert alert-danger">
         <%=  @rca.errors.full_messages.first %></div>
@@ -90,7 +90,7 @@
 
     <div class= 'row'>
       <p>
-        <%= form.submit 'Create RCA', class: 'btn btn-success' %>
+        <%= form.submit 'Create RCA', class: 'btn btn-success', id: 'submitbutton' %>
       </p>
     </div>
   <% end %>
@@ -139,7 +139,6 @@
     tablerow.appendChild(completed_oncolumn);
     tablerow.appendChild(newactionitembuttoncolumn);
     parenttable.appendChild(tablerow);
-    addAndUpdateActionItems();
   }
 
 var actionitems = new Array();
@@ -172,5 +171,9 @@ function toggle(x) {
     x.className = 'btn btn-danger btn-sm';
   }
 }
-
+  document.getElementById('submitbutton').addEventListener('click', function(event){
+  event.preventDefault();
+  addAndUpdateActionItems();
+  document.getElementById('form_id').submit();
+})
 </script>
