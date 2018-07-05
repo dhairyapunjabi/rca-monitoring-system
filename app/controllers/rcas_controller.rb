@@ -13,7 +13,22 @@ class RcasController < ApplicationController
     @rca = Rca.new(rca_params)
     @rca.user = User.find_or_initialize_by(user_params)
     @teams = Team.all.to_a
-    if (@rca.user.save && @rca.save)
+    @actionitems = actionitem_params
+    temporary_action_item = Actionitem.new
+    @actionitems[:list].each do |actionitem|
+      temporary_action_item.assign_attributes(actionitem)
+      temporary_action_item.rca = @rca
+      if !(temporary_action_item.valid?)
+        break
+      end
+    end
+
+    if (temporary_action_item.valid? & @rca.user.valid? & @rca.valid?)
+      @rca.user.save
+      @rca.save
+      @actionitems[:list].each do |actionitem|
+        @rca.actionitems.create(actionitem)
+      end
       redirect_to rcas_path
     else
       render 'new'
@@ -55,5 +70,10 @@ class RcasController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email)
+  end
+
+  def actionitem_params
+    params[:actionitem][:list] = JSON.parse params[:actionitem][:list]
+    params.require(:actionitem).permit(list:[:name, :status, :complete_by, :completed_on])
   end
 end

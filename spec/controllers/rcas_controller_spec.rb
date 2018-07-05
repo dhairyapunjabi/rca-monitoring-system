@@ -54,45 +54,64 @@ RSpec.describe RcasController, type: :controller do
   end
 
   describe 'create' do
-    it 'saves newly created valid rca' do
-      expect do
-        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
-      end.to change(Rca, :count).by(1)
+    context 'when all validations are passed' do
+      it 'should save newly created valid rca' do
+        expect do
+          post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        end.to change(Rca, :count).by(1)
+      end
+
+      it 'should find or create valid user' do
+        expect do
+          post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        end.to change(User, :count).by(1)
+
+        expect do
+          post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        end.to change(User, :count).by(0)
+      end
+
+      it 'should save all action items' do
+        expect do
+          post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        end.to change(Actionitem, :count).by(2)
+      end
+
+      it 'should render the index template' do
+        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        expect(response).to redirect_to(rcas_path)
+      end
     end
 
-    it 'finds or create valid user' do
+    it 'renders the new form if any action item is not valid' do
       expect do
-        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
-      end.to change(User, :count).by(1)
-
-      expect do
-        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
-      end.to change(User, :count).by(0)
-    end
-
-    it 'renders the index if rca and user is valid' do
-      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
-      expect(response).to redirect_to(rcas_path)
+        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+      end.to change(Actionitem, :count).by(0)
     end
 
     it 'renders the new form if the rca is not valid' do
-      post :create, params: { rca: { title: '', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
+      post :create, params: { rca: { title: '', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
       expect(response).to render_template(:new)
     end
 
-    it 'renders the new form if the user is not valid even if rca is valid' do
-      post :create, params: { rca: { title: 'fadfa', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@gmail.com' } }
+    it 'renders the new form if the user is not valid' do
+      post :create, params: { rca: { title: 'fadfa', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@gmail.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
       expect(response).to render_template(:new)
     end
 
     it 'associates created user with the created rca' do
-      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
+      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
       expect(Rca.all.last.user).to eq(User.all.last)
+    end
+
+    it 'associates created action items with the created rca' do
+      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+      expect(Actionitem.all.to_a.last(2)).to eq(Rca.all.last.actionitems)
     end
 
     it 'assigns all teams in a instance variable' do
       teams = FactoryBot.create_list(:team, 3)
-      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
+      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
       teams << Rca.all.last.team
       expect(assigns(:teams)).to eq(teams)
     end
