@@ -58,7 +58,7 @@
             <td style = 'padding-right:50px;'><input type = 'text'></td>
             <td style = 'padding-right:50px;'><input type = 'button' value = 'Pending' class = 'btn btn-danger btn-sm' onclick = 'toggle(this)'></td>
             <td style = 'padding-right:50px;'><input type = 'date' min = <%= Date.today %>></td>
-            <td><input type = 'date' max = <%= Date.today %>></td>
+            <td><input type = 'date' max = <%= Date.today %> disabled></td>
             <td><input type = 'button' value = 'New Action Item' class = 'btn btn-primary btn-sm' onclick = 'createNewActionItem(this)'></td>
           </tr>
         </tbody>
@@ -114,6 +114,7 @@
     var completed_on = document.createElement('INPUT');
     completed_on.type = 'date';
     completed_on.max = '<%= Date.today %>';
+    completed_on.disabled = true;
     var newactionitembutton = document.createElement('INPUT');
     newactionitembutton.type = 'button';
     newactionitembutton.value = 'New Action Item';
@@ -176,10 +177,16 @@ function toggle(x) {
   if (x.value == 'Pending'){
     x.value = 'Completed';
     x.className = 'btn btn-success btn-sm';
+    x.parentElement.parentElement.querySelector('input[min]').disabled = true;
+    x.parentElement.parentElement.querySelector('input[max]').disabled = false;
+    x.parentElement.parentElement.querySelector('input[min]').value = 'initial';
   }
   else{
     x.value = 'Pending';
     x.className = 'btn btn-danger btn-sm';
+    x.parentElement.parentElement.querySelector('input[max]').disabled = true;
+    x.parentElement.parentElement.querySelector('input[min]').disabled = false;
+    x.parentElement.parentElement.querySelector('input[max]').value = 'initial';
   }
 }
 
