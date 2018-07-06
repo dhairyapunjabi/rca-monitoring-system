@@ -2,29 +2,17 @@
   <h2>New RCA</h2>
   <div class =  'border-top border-danger' style = 'border-width:3px !important; padding-top:40px'></div>
   <%= form_with model: @rca, local: true, id: 'form_id' do |form| %>
-    <% if (@rca.errors.any?) %>
-      <div class="alert alert-danger">
-        <%=  @rca.errors.full_messages.first %></div>
-      <% if (@rca.user.errors[:email].any?) %>
-        <div class="alert alert-danger">
-          <%=  @rca.user.errors.full_messages[1]%></div>
-      <%end%>
-    <% elsif (@rca.user.errors[:email].any?) %>
-      <div class="alert alert-danger">
-        <%=  @rca.user.errors.full_messages.first%></div>
-    <%end%>
-
     <div class = 'row'>
       <p>
         <%= form.label :title, style: 'font-size:20px;'%><br>
-        <%= form.text_field :title, class: 'form-control', size: '100', style: 'border-top:0; border-right:0; border-left:0; outline:none; box-shadow:none !important', placeholder: 'Title for the RCA'%>
+        <%= form.text_field :title, class: 'form-control', size: '100', style: 'border-top:0; border-right:0; border-left:0; outline:none; box-shadow:none !important', placeholder: 'Title for the RCA', maxlength: 50 %>
       </p>
     </div>
 
     <div class = 'row'>
       <p>
         <%= form.label "Your email", style: 'font-size:20px' %><br>
-        <input name = "user[email]" type = "text" class = 'form-control' style = 'border-top:0; border-right:0; border-left:0; outline:none; box-shadow:none !important' placeholder = 'xyz@go-jek.com' size = 100 value = <%= @rca.user.email %> >
+        <input name = "user[email]" type = "text" class = 'form-control' style = 'border-top:0; border-right:0; border-left:0; outline:none; box-shadow:none !important' maxlength = '30' placeholder = 'xyz@go-jek.com' size = 100 value = <%= @rca.user.email %> >
       </p>
     </div>
 
@@ -57,7 +45,7 @@
             <td style = 'padding-right:20px;'><button type = 'button' style = 'display:none;' onclick = 'hide(this)'><i class = 'fa fa-times'></i></button></td>
             <td style = 'padding-right:50px;'><input type = 'text'></td>
             <td style = 'padding-right:50px;'><input type = 'button' value = 'Pending' class = 'btn btn-danger btn-sm' onclick = 'toggle(this)'></td>
-            <td style = 'padding-right:50px;'><input type = 'date' min = <%= Date.today %>></td>
+            <td style = 'padding-right:50px;'><input type = 'date' min = <%= Date.today %> enabled></td>
             <td><input type = 'date' max = <%= Date.today %> disabled></td>
             <td><input type = 'button' value = 'New Action Item' class = 'btn btn-primary btn-sm' onclick = 'createNewActionItem(this)'></td>
           </tr>
@@ -111,10 +99,11 @@
     var complete_by = document.createElement('INPUT');
     complete_by.type = 'date';
     complete_by.min = '<%= Date.today %>';
+    complete_by.setAttribute('enabled','');
     var completed_on = document.createElement('INPUT');
     completed_on.type = 'date';
     completed_on.max = '<%= Date.today %>';
-    completed_on.disabled = true;
+    completed_on.setAttribute('disabled','');
     var newactionitembutton = document.createElement('INPUT');
     newactionitembutton.type = 'button';
     newactionitembutton.value = 'New Action Item';
@@ -153,39 +142,40 @@
     parenttable.appendChild(tablerow);
   }
 
-var actionitems = new Array();
+ var actionitems = new Array();
 
-function addAndUpdateActionItems() {
+ function addAndUpdateActionItems() {
   var parent = document.getElementById('tablebody')
   var actionitems_name = parent.querySelectorAll('input[type = "text"]');
   var actionitems_status = parent.querySelectorAll('input[onclick = "toggle(this)"]');
   var actionitems_complete_by = parent.querySelectorAll('input[min]');
   var actionitems_completed_on = parent.querySelectorAll('input[max]');
-  for (i = 0; i < actionitems_name.length; i++){
+  for (i = 0; i < actionitems_name.length; i++) {
     var object = new Object();
     object.name = actionitems_name[i].value;
     object.status = actionitems_status[i].value;
     object.complete_by = actionitems_complete_by[i].value;
     object.completed_on = actionitems_completed_on[i].value;
-    console.log(object);
     actionitems[i] = object;
   }
   document.getElementById('list').value = JSON.stringify(actionitems);
 }
 
-function toggle(x) {
-  if (x.value == 'Pending'){
+ function toggle(x) {
+  if (x.value == 'Pending') {
     x.value = 'Completed';
     x.className = 'btn btn-success btn-sm';
-    x.parentElement.parentElement.querySelector('input[min]').disabled = true;
-    x.parentElement.parentElement.querySelector('input[max]').disabled = false;
+    x.parentElement.parentElement.querySelector('input[min]').setAttribute('disabled','');
+    x.parentElement.parentElement.querySelector('input[max]').removeAttribute('disabled');
+    x.parentElement.parentElement.querySelector('input[max]').setAttribute('enabled','');
     x.parentElement.parentElement.querySelector('input[min]').value = 'initial';
   }
-  else{
+  else {
     x.value = 'Pending';
     x.className = 'btn btn-danger btn-sm';
-    x.parentElement.parentElement.querySelector('input[max]').disabled = true;
-    x.parentElement.parentElement.querySelector('input[min]').disabled = false;
+    x.parentElement.parentElement.querySelector('input[max]').setAttribute('disabled','');
+    x.parentElement.parentElement.querySelector('input[min]').removeAttribute('disabled');
+    x.parentElement.parentElement.querySelector('input[min]').setAttribute('enabled','');
     x.parentElement.parentElement.querySelector('input[max]').value = 'initial';
   }
 }
@@ -197,9 +187,47 @@ function hide(e){
   e.parentElement.parentElement.parentElement.removeChild(e.parentElement.parentElement);
 }
 
-  document.getElementById('submitbutton').addEventListener('click', function(event){
+document.getElementById('submitbutton').addEventListener('click', function(event){
   event.preventDefault();
   addAndUpdateActionItems();
-  document.getElementById('form_id').submit();
+  var form = document.getElementById('form_id');
+  var pattern = /([a-zA-Z0-9]+)([\.{1}])?([a-zA-Z0-9]+)\@go-jek([\.])com/;
+  if (form.querySelector('input[placeholder = "Title for the RCA"]').value == ''){
+    alert("Title can't be blank");
+  }
+  else if(form.querySelector('input[placeholder = "Title for the RCA"]').value.length < 3){
+    alert("Title should be atleast 3 characters long");
+  }
+
+  else if (form.querySelector('input[placeholder = "xyz@go-jek.com"]').value == ''){
+    alert("E-mail can't be blank");
+  }
+  else if (!pattern.test(form.querySelector('input[placeholder = "xyz@go-jek.com"]').value)){
+    alert("E-mail is invalid");
+  }
+  else if (!validateNameOfActionItems()){
+    alert("Action Item can't be blank");
+  }
+  else if (!validateDateOfActionItems()){
+    alert("Date can't be blank for Action Item");
+  }
+  form.submit();
 })
+
+ function validateNameOfActionItems() {
+  var Nodelist = document.getElementById('tablebody').querySelectorAll('input[type = "text"]');
+  for(i = 0; i < Nodelist.length; i++){
+    if (Nodelist[i].value == '')
+      return false;
+  }
+  return true;
+}
+ function validateDateOfActionItems() {
+  var Nodelist = document.getElementById('tablebody').querySelectorAll('input[enabled]');
+  for(i = 0; i < Nodelist.length; i++){
+    if (Nodelist[i].value == '')
+      return false;
+  }
+  return true;
+}
 </script>
