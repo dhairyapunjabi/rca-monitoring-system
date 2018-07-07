@@ -33,21 +33,21 @@
       <table class = 'table-responsive table-hover'>
         <thead>
           <tr>
-            <th></th>
             <th style = 'padding-right:50px;'>Name</th>
             <th style = 'padding-right:50px;'>Status</th>
             <th style = 'padding-right:50px;'>Complete by</th>
             <th>Completed on</th>
+            <th></th>
           </tr>
         </thead>
         <tbody id = 'tablebody'>
           <tr>
-            <td style = 'padding-right:20px;'><button type = 'button' style = 'display:none;' onclick = 'hide(this)'><i class = 'fa fa-times'></i></button></td>
             <td style = 'padding-right:50px;'><input type = 'text'></td>
             <td style = 'padding-right:50px;'><input type = 'button' value = 'Pending' class = 'btn btn-danger btn-sm' onclick = 'toggle(this)'></td>
             <td style = 'padding-right:50px;'><input type = 'date' min = <%= Date.today %> enabled></td>
-            <td><input type = 'date' max = <%= Date.today %> disabled></td>
-            <td><input type = 'button' value = 'New Action Item' class = 'btn btn-primary btn-sm' onclick = 'createNewActionItem(this)'></td>
+            <td style = 'padding-right:50px;'><input type = 'date' style = 'background-color:rgb(182, 192, 200);'  max = <%= Date.today %> disabled></td>
+            <td style = 'padding-right:20px;'><button type = 'button' style = 'display:none;' onclick = 'hide(this)' class = 'btn btn-danger btn-sm'><i class = 'fa fa-minus'></i></button></td>
+            <td><button type = 'button' class = 'btn btn-primary btn-sm' onclick = 'createNewActionItem(this)'><i class = 'fa fa-plus'></i></td>
           </tr>
         </tbody>
       </table>
@@ -104,16 +104,20 @@
     completed_on.type = 'date';
     completed_on.max = '<%= Date.today %>';
     completed_on.setAttribute('disabled','');
-    var newactionitembutton = document.createElement('INPUT');
+    completed_on.style.backgroundColor = 'rgb(182, 192, 200)';
+    var newactionitembutton = document.createElement('BUTTON');
     newactionitembutton.type = 'button';
-    newactionitembutton.value = 'New Action Item';
     newactionitembutton.setAttribute('onclick', 'createNewActionItem(this)');
     newactionitembutton.setAttribute('class', 'btn btn-primary btn-sm');
+    var newactionitemicon = document.createElement('I');
+    newactionitemicon.className = 'fa fa-plus';
+    newactionitembutton.appendChild(newactionitemicon);
     var removebutton = document.createElement('BUTTON');
     removebutton.type = 'button';
+    removebutton.className = 'btn btn-danger btn-sm';
     removebutton.setAttribute('onclick', 'hide(this)');
     var removeicon = document.createElement('I');
-    removeicon.className = 'fa fa-times';
+    removeicon.className = 'fa fa-minus';
     removebutton.appendChild(removeicon);
     var parenttable = document.getElementById('tablebody');
     var tablerow = document.createElement('TR');
@@ -130,14 +134,15 @@
     complete_bycolumn.setAttribute('style', 'padding-right:50px;');
     complete_bycolumn.appendChild(complete_by);
     var completed_oncolumn = document.createElement('TD');
+    completed_oncolumn.setAttribute('style', 'padding-right:50px;');
     completed_oncolumn.appendChild(completed_on);
     var newactionitembuttoncolumn = document.createElement('TD');
     newactionitembuttoncolumn.appendChild(newactionitembutton);
-    tablerow.appendChild(hidecolumn);
     tablerow.appendChild(namecolumn);
     tablerow.appendChild(statuscolumn);
     tablerow.appendChild(complete_bycolumn);
     tablerow.appendChild(completed_oncolumn);
+    tablerow.appendChild(hidecolumn);
     tablerow.appendChild(newactionitembuttoncolumn);
     parenttable.appendChild(tablerow);
   }
@@ -170,6 +175,9 @@
     x.parentElement.parentElement.querySelector('input[max]').removeAttribute('disabled');
     x.parentElement.parentElement.querySelector('input[max]').setAttribute('enabled','');
     x.parentElement.parentElement.querySelector('input[min]').value = '';
+    x.parentElement.parentElement.querySelector('input[max]').value = '<%= Date.today %>';
+    x.parentElement.parentElement.querySelector('input[min]').style.backgroundColor = 'rgb(182, 192, 200)';
+    x.parentElement.parentElement.querySelector('input[max]').style.backgroundColor = 'rgb(255, 255, 255)';
   }
   else {
     x.value = 'Pending';
@@ -179,12 +187,14 @@
     x.parentElement.parentElement.querySelector('input[min]').removeAttribute('disabled');
     x.parentElement.parentElement.querySelector('input[min]').setAttribute('enabled','');
     x.parentElement.parentElement.querySelector('input[max]').value = '';
+    x.parentElement.parentElement.querySelector('input[max]').style.backgroundColor = 'rgb(182, 192, 200)';
+    x.parentElement.parentElement.querySelector('input[min]').style.backgroundColor = 'rgb(255, 255, 255)';
   }
 }
 
 function hide(e){
-  if (e.parentElement.parentElement.querySelector('input[onclick="createNewActionItem(this)"]').style.display != "none"){
-    e.parentElement.parentElement.previousElementSibling.querySelector('input[onclick="createNewActionItem(this)"]').style.display = 'initial';
+  if (e.parentElement.parentElement.querySelector('button[onclick="createNewActionItem(this)"]').style.display != "none"){
+    e.parentElement.parentElement.previousElementSibling.querySelector('button[onclick="createNewActionItem(this)"]').style.display = 'initial';
   }
   e.parentElement.parentElement.parentElement.removeChild(e.parentElement.parentElement);
 }
