@@ -47,7 +47,7 @@
             <td style = 'padding-right:50px;'><input type = 'date' min = <%= Date.today %> enabled></td>
             <td style = 'padding-right:50px;'><input type = 'date' style = 'background-color:rgb(182, 192, 200);'  max = <%= Date.today %> disabled></td>
             <td style = 'padding-right:20px;'><button type = 'button' style = 'display:none;' onclick = 'hide(this)' class = 'btn btn-danger btn-sm'><i class = 'fa fa-minus'></i></button></td>
-            <td><button type = 'button' class = 'btn btn-primary btn-sm' onclick = 'createNewActionItem(this)'><i class = 'fa fa-plus'></i></td>
+            <td><button type = 'button' class = 'btn btn-primary btn-sm' onclick = 'createNewActionItem(this)'><i class = 'fa fa-plus'></i></button></td>
           </tr>
         </tbody>
       </table>
@@ -89,6 +89,10 @@
 <script>
   function createNewActionItem(x) {
     x.style.display = 'none';
+    var tablelist = document.querySelectorAll('tr')
+    if (tablelist.length == 2){
+      tablelist[1].querySelector('button[onclick="hide(this)"]').style.display = 'initial';
+    }
     var name = document.createElement('INPUT');
     name.setAttribute('type', 'text');
     var status = document.createElement('INPUT');
@@ -147,9 +151,9 @@
     parenttable.appendChild(tablerow);
   }
 
- var actionitems = new Array();
+var actionitems = new Array();
 
- function addAndUpdateActionItems() {
+function addAndUpdateActionItems() {
   var parent = document.getElementById('tablebody')
   var actionitems_name = parent.querySelectorAll('input[type = "text"]');
   var actionitems_status = parent.querySelectorAll('input[onclick = "toggle(this)"]');
@@ -166,7 +170,7 @@
   document.getElementById('list').value = JSON.stringify(actionitems);
 }
 
- function toggle(x) {
+function toggle(x) {
   if (x.value == 'Pending') {
     x.value = 'Completed';
     x.className = 'btn btn-success btn-sm';
@@ -193,6 +197,13 @@
 }
 
 function hide(e){
+  var tablelist = document.querySelectorAll('tr')
+  if (tablelist.length == 3){
+    if (e.parentElement.parentElement == tablelist[1])
+      tablelist[2].querySelector('button[onclick="hide(this)"]').style.display = 'none';
+    else
+      tablelist[1].querySelector('button[onclick="hide(this)"]').style.display = 'none';
+  }
   if (e.parentElement.parentElement.querySelector('button[onclick="createNewActionItem(this)"]').style.display != "none"){
     e.parentElement.parentElement.previousElementSibling.querySelector('button[onclick="createNewActionItem(this)"]').style.display = 'initial';
   }
@@ -227,7 +238,7 @@ document.getElementById('submitbutton').addEventListener('click', function(event
   }
 })
 
- function validateNameOfActionItems() {
+function validateNameOfActionItems() {
   var Nodelist = document.getElementById('tablebody').querySelectorAll('input[type = "text"]');
   for(i = 0; i < Nodelist.length; i++){
     if (Nodelist[i].value == '')
@@ -235,7 +246,7 @@ document.getElementById('submitbutton').addEventListener('click', function(event
   }
   return true;
 }
- function validateDateOfActionItems() {
+function validateDateOfActionItems() {
   var Nodelist = document.getElementById('tablebody').querySelectorAll('input[enabled]');
   for(i = 0; i < Nodelist.length; i++){
     if (Nodelist[i].value == '')
