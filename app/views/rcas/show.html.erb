@@ -33,6 +33,42 @@
 
     <div class = 'row'>
       <p>
+        <%= form.label 'Action Items:', style: 'font-size:20px; color:green;' %></p>
+      <table class = 'table-responsive table-hover'>
+          <thead>
+            <tr>
+              <th style = 'padding-right:50px;'>Name</th>
+              <th style = 'padding-right:50px;'>Status</th>
+              <th style = 'padding-right:50px;'>Complete by</th>
+              <th style = 'padding-right:50px;'>Completed on</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id = 'tablebody'>
+            <% @rca.actionitems.each do |actionitem| %>
+            <tr>
+              <td style = 'padding-right:50px;'><%= actionitem.name %></td>
+              <td style = 'padding-right:50px;' <% if actionitem.status == 'Pending' %> class = 'text-danger' <% else %>class = 'text-success' <% end %> ><%= actionitem.status%></td>
+              <% if actionitem.complete_by == nil %>
+                <td style = 'padding-right:50px;'>N.A.</td>
+              <% else %>
+                <td style = 'padding-right:50px;'><%= actionitem.complete_by %></td>
+              <% end %>
+              <% if actionitem.completed_on == nil %>
+                <td style = 'padding-right:50px;'>N.A.</td>
+              <% else %>
+                <td style = 'padding-right:50px;'><%= actionitem.completed_on %></td>
+              <% end %>
+              </tr>
+              <% end %>
+          </tbody>
+        </table>
+    </div>
+
+    <div class =  'border-top' style = 'border-width:1.5px !important; padding-top:40px'></div>
+
+    <div class = 'row'>
+      <p>
         <%= form.label 'Status:', style: 'font-size:20px; color:green;' %><br>
         <%= @rca.status %>
       </p>
