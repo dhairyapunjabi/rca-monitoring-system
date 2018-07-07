@@ -165,18 +165,20 @@
   if (x.value == 'Pending') {
     x.value = 'Completed';
     x.className = 'btn btn-success btn-sm';
+    x.parentElement.parentElement.querySelector('input[min]').removeAttribute('enabled');
     x.parentElement.parentElement.querySelector('input[min]').setAttribute('disabled','');
     x.parentElement.parentElement.querySelector('input[max]').removeAttribute('disabled');
     x.parentElement.parentElement.querySelector('input[max]').setAttribute('enabled','');
-    x.parentElement.parentElement.querySelector('input[min]').value = 'initial';
+    x.parentElement.parentElement.querySelector('input[min]').value = '';
   }
   else {
     x.value = 'Pending';
     x.className = 'btn btn-danger btn-sm';
+    x.parentElement.parentElement.querySelector('input[max]').removeAttribute('enabled');
     x.parentElement.parentElement.querySelector('input[max]').setAttribute('disabled','');
     x.parentElement.parentElement.querySelector('input[min]').removeAttribute('disabled');
     x.parentElement.parentElement.querySelector('input[min]').setAttribute('enabled','');
-    x.parentElement.parentElement.querySelector('input[max]').value = 'initial';
+    x.parentElement.parentElement.querySelector('input[max]').value = '';
   }
 }
 
@@ -198,7 +200,6 @@ document.getElementById('submitbutton').addEventListener('click', function(event
   else if(form.querySelector('input[placeholder = "Title for the RCA"]').value.length < 3){
     alert("Title should be atleast 3 characters long");
   }
-
   else if (form.querySelector('input[placeholder = "xyz@go-jek.com"]').value == ''){
     alert("E-mail can't be blank");
   }
@@ -211,7 +212,9 @@ document.getElementById('submitbutton').addEventListener('click', function(event
   else if (!validateDateOfActionItems()){
     alert("Date can't be blank for Action Item");
   }
-  form.submit();
+  else{
+    form.submit();
+  }
 })
 
  function validateNameOfActionItems() {
