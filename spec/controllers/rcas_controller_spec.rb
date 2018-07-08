@@ -83,20 +83,88 @@ RSpec.describe RcasController, type: :controller do
       end
     end
 
-    it 'renders the new form if any action item is not valid' do
-      expect do
+    context 'when any action item is invalid' do
+      it "shouldn't create RCA" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: 'adaed', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        end.to change(Rca, :count).by(0)
+      end
+
+      it "shouldn't create any action item" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: 'daedaed', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        end.to change(Actionitem, :count).by(0)
+      end
+
+      it "doesn't create User" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: 'adaed', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        end.to change(User, :count).by(0)
+      end
+
+      it 'should render the new form' do
         post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
-      end.to change(Actionitem, :count).by(0)
+        expect(response).to render_template(:new)
+      end
     end
 
-    it 'renders the new form if the rca is not valid' do
-      post :create, params: { rca: { title: '', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
-      expect(response).to render_template(:new)
+    context 'when rca is not valid' do
+      it "doesn't create RCA" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: '', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        end.to change(Rca, :count).by(0)
+      end
+
+      it "shouldn't create any action" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: '', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        end.to change(Actionitem, :count).by(0)
+      end
+
+      it "doesn't create User" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: '', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        end.to change(User, :count).by(0)
+      end
+
+      it 'should render the new form' do
+        post :create, params: { rca: { title: '', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        expect(response).to render_template(:new)
+      end
     end
 
-    it 'renders the new form if the user is not valid' do
-      post :create, params: { rca: { title: 'fadfa', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@gmail.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
-      expect(response).to render_template(:new)
+    context 'when user is not valid' do
+      it "shouldn't create User" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: 'ikbea', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jk.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        end.to change(User, :count).by(0)
+      end
+
+      it "shouldn't create any Action item" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: 'ikbea', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jk.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        end.to change(Actionitem, :count).by(0)
+      end
+
+      it "shouldn't create Rca" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: 'ikbea', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jk.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        end.to change(Rca, :count).by(0)
+      end
+
+      it 'should render the new form' do
+        post :create, params: { rca: { title: 'fadfa', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@gmail.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        expect(response).to render_template(:new)
+      end
     end
 
     it 'associates created user with the created rca' do
