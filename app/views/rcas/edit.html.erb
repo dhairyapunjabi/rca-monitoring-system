@@ -3,19 +3,7 @@
   <h2>Edit RCA</h2>
 
   <div class =  'border-top border-danger' style = 'border-width:3px !important; padding-top:40px'>
-    <%= form_with model: @rca, local: true do |form| %>
-      <% if (@rca.errors.any?) %>
-        <div class="alert alert-danger">
-          <%=  @rca.errors.full_messages.first %></div>
-        <% if (@rca.user.errors[:email].any?) %>
-          <div class="alert alert-danger">
-            <%=  @rca.user.errors.full_messages[1]%></div>
-        <%end%>
-      <% elsif (@rca.user.errors[:email].any?) %>
-        <div class="alert alert-danger">
-          <%=  @rca.user.errors.full_messages.first%></div>
-      <%end%>
-
+    <%= form_with model: @rca, local: true, id: 'form_id' do |form| %>
       <div class = 'row'>
         <p>
           <%= form.label :title, style: 'font-size:20px;'%><br>
@@ -39,6 +27,44 @@
 
       <div class = 'row'>
         <p>
+          <%= form.label 'Action Items', style: 'font-size:20px' %><br>
+        </p>
+      </div>
+
+      <div class = container id = 'actionitem'>
+        <table class = 'table-responsive table-hover'>
+          <thead>
+            <tr>
+              <th style = 'padding-right:50px;'>Name</th>
+              <th style = 'padding-right:50px;'>Status</th>
+              <th style = 'padding-right:50px;'>Complete by</th>
+              <th style = 'padding-right:50px;'>Completed on</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id = 'tablebody'>
+            <% @rca.actionitems.each do |actionitem| %>
+              <tr>
+                <td style = 'padding-right:50px;'><input type = 'text' value = <%= actionitem.name %> ></td>
+                <% if actionitem.status == 'Pending' %>
+                  <td style = 'padding-right:50px;'><input type = 'button' value = 'Pending' class = 'btn btn-danger btn-sm' onclick = 'toggle(this)'></td>
+                  <td style = 'padding-right:50px;'><input type = 'date' min = <%= Date.today %> enabled value = <%= actionitem.complete_by %> ></td>
+                  <td style = 'padding-right:50px;'><input type = 'date' max = <%= Date.today %> disabled style = 'background-color:rgb(182,192,200)'></td>
+                <% else %>
+                  <td style = 'padding-right:50px;'><input type = 'button' value = 'Completed' class = 'btn btn-success btn-sm' onclick = 'toggle(this)'></td>
+                  <td style = 'padding-right:50px;'><input type = 'date' min = <%= Date.today %> disabled style = 'background-color:rgb(182,192,200)' value = <%= actionitem.complete_by %> ></td>
+                  <td style = 'padding-right:50px;'><input type = 'date' max = <%= Date.today %> enabled value = <%= actionitem.completed_on %> ></td>
+                <% end %>
+                <td style = 'padding-right:20px;'><button type = 'button'  onclick = 'hide(this)' class = 'btn btn-danger btn-sm'><i class = 'fa fa-minus'></i></button></td>
+                <td><button type = 'button' <% if actionitem != @rca.actionitems.all.last %> style = 'display:none' <% end %> class = 'btn btn-primary btn-sm' onclick = 'createNewActionItem(this)'><i class = 'fa fa-plus'></i></button></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class = 'row'>
+        <p>
           <%= form.label :status, style: 'font-size:20px'%><br>
           <%= form.select(:status) do %>
             <option value = 'Pending'>Pending</option>
@@ -58,13 +84,179 @@
         </p>
       </div>
 
+      <input type = 'hidden' id = 'list' name = 'actionitem[list]'>
       <br><br>
 
       <div class= 'row'>
         <p>
-          <%= form.submit class: 'btn btn-success' %>
+          <%= form.submit 'Update RCA', class: 'btn btn-success', id: 'submitbutton' %>
         </p>
       </div>
     <% end %>
   </div>
 </div>
+
+<script>
+  function createNewActionItem(x) {
+    x.style.display = 'none';
+    var name = document.createElement('INPUT');
+    name.setAttribute('type', 'text');
+    var status = document.createElement('INPUT');
+    status.setAttribute('type', 'button');
+    status.value = 'Pending';
+    status.className = 'btn btn-danger btn-sm';
+    status.setAttribute('onclick', 'toggle(this)');
+    var complete_by = document.createElement('INPUT');
+    complete_by.type = 'date';
+    complete_by.min = '<%= Date.today %>';
+    complete_by.setAttribute('enabled','');
+    var completed_on = document.createElement('INPUT');
+    completed_on.type = 'date';
+    completed_on.max = '<%= Date.today %>';
+    completed_on.setAttribute('disabled','');
+    completed_on.style.backgroundColor = 'rgb(182, 192, 200)';
+    var newactionitembutton = document.createElement('BUTTON');
+    newactionitembutton.type = 'button';
+    newactionitembutton.setAttribute('onclick', 'createNewActionItem(this)');
+    newactionitembutton.setAttribute('class', 'btn btn-primary btn-sm');
+    var newactionitemicon = document.createElement('I');
+    newactionitemicon.className = 'fa fa-plus';
+    newactionitembutton.appendChild(newactionitemicon);
+    var removebutton = document.createElement('BUTTON');
+    removebutton.type = 'button';
+    removebutton.className = 'btn btn-danger btn-sm';
+    removebutton.setAttribute('onclick', 'hide(this)');
+    var removeicon = document.createElement('I');
+    removeicon.className = 'fa fa-minus';
+    removebutton.appendChild(removeicon);
+    var parenttable = document.getElementById('tablebody');
+    var tablerow = document.createElement('TR');
+    var hidecolumn = document.createElement('TD');
+    hidecolumn.setAttribute('style', 'padding-right:20px;');
+    hidecolumn.appendChild(removebutton);
+    var namecolumn = document.createElement('TD');
+    namecolumn.setAttribute('style', 'padding-right:50px;');
+    namecolumn.appendChild(name);
+    var statuscolumn = document.createElement('TD');
+    statuscolumn.setAttribute('style', 'padding-right:50px;');
+    statuscolumn.appendChild(status);
+    var complete_bycolumn = document.createElement('TD');
+    complete_bycolumn.setAttribute('style', 'padding-right:50px;');
+    complete_bycolumn.appendChild(complete_by);
+    var completed_oncolumn = document.createElement('TD');
+    completed_oncolumn.setAttribute('style', 'padding-right:50px;');
+    completed_oncolumn.appendChild(completed_on);
+    var newactionitembuttoncolumn = document.createElement('TD');
+    newactionitembuttoncolumn.appendChild(newactionitembutton);
+    tablerow.appendChild(namecolumn);
+    tablerow.appendChild(statuscolumn);
+    tablerow.appendChild(complete_bycolumn);
+    tablerow.appendChild(completed_oncolumn);
+    tablerow.appendChild(hidecolumn);
+    tablerow.appendChild(newactionitembuttoncolumn);
+    parenttable.appendChild(tablerow);
+  }
+
+var actionitems = new Array();
+
+function addAndUpdateActionItems() {
+  var parent = document.getElementById('tablebody')
+  var actionitems_name = parent.querySelectorAll('input[type = "text"]');
+  var actionitems_status = parent.querySelectorAll('input[onclick = "toggle(this)"]');
+  var actionitems_complete_by = parent.querySelectorAll('input[min]');
+  var actionitems_completed_on = parent.querySelectorAll('input[max]');
+  for (i = 0; i < actionitems_name.length; i++) {
+    var object = new Object();
+    object.name = actionitems_name[i].value;
+    object.status = actionitems_status[i].value;
+    object.complete_by = actionitems_complete_by[i].value;
+    object.completed_on = actionitems_completed_on[i].value;
+    actionitems[i] = object;
+  }
+  document.getElementById('list').value = JSON.stringify(actionitems);
+}
+
+function toggle(x) {
+  if (x.value == 'Pending') {
+    x.value = 'Completed';
+    x.className = 'btn btn-success btn-sm';
+    x.parentElement.parentElement.querySelector('input[min]').removeAttribute('enabled');
+    x.parentElement.parentElement.querySelector('input[min]').setAttribute('disabled','');
+    x.parentElement.parentElement.querySelector('input[max]').removeAttribute('disabled');
+    x.parentElement.parentElement.querySelector('input[max]').setAttribute('enabled','');
+    x.parentElement.parentElement.querySelector('input[max]').value = '<%= Date.today %>';
+    x.parentElement.parentElement.querySelector('input[min]').style.backgroundColor = 'rgb(182, 192, 200)';
+    x.parentElement.parentElement.querySelector('input[max]').style.backgroundColor = 'rgb(255, 255, 255)';
+  }
+  else {
+    x.value = 'Pending';
+    x.className = 'btn btn-danger btn-sm';
+    x.parentElement.parentElement.querySelector('input[max]').removeAttribute('enabled');
+    x.parentElement.parentElement.querySelector('input[max]').setAttribute('disabled','');
+    x.parentElement.parentElement.querySelector('input[min]').removeAttribute('disabled');
+    x.parentElement.parentElement.querySelector('input[min]').setAttribute('enabled','');
+    x.parentElement.parentElement.querySelector('input[max]').value = '';
+    x.parentElement.parentElement.querySelector('input[max]').style.backgroundColor = 'rgb(182, 192, 200)';
+    x.parentElement.parentElement.querySelector('input[min]').style.backgroundColor = 'rgb(255, 255, 255)';
+  }
+}
+
+function hide(e){
+  var tablelist = document.querySelectorAll('tr')
+  if (tablelist.length == 3){
+    if (e.parentElement.parentElement == tablelist[1])
+      tablelist[2].querySelector('button[onclick="hide(this)"]').style.display = 'none';
+    else
+      tablelist[1].querySelector('button[onclick="hide(this)"]').style.display = 'none';
+  }
+  if (e.parentElement.parentElement.querySelector('button[onclick="createNewActionItem(this)"]').style.display != "none"){
+    e.parentElement.parentElement.previousElementSibling.querySelector('button[onclick="createNewActionItem(this)"]').style.display = 'initial';
+  }
+  e.parentElement.parentElement.parentElement.removeChild(e.parentElement.parentElement);
+}
+
+document.getElementById('submitbutton').addEventListener('click', function(event){
+  event.preventDefault();
+  addAndUpdateActionItems();
+  var form = document.getElementById('form_id');
+  var pattern = /([a-zA-Z0-9]+)([\.{1}])?([a-zA-Z0-9]+)\@go-jek([\.])com/;
+  if (form.querySelector('input[placeholder = "Title for the RCA"]').value == ''){
+    alert("Title can't be blank");
+  }
+  else if(form.querySelector('input[placeholder = "Title for the RCA"]').value.length < 3){
+    alert("Title should be atleast 3 characters long");
+  }
+  else if (form.querySelector('input[placeholder = "xyz@go-jek.com"]').value == ''){
+    alert("E-mail can't be blank");
+  }
+  else if (!pattern.test(form.querySelector('input[placeholder = "xyz@go-jek.com"]').value)){
+    alert("E-mail is invalid");
+  }
+  else if (!validateNameOfActionItems()){
+    alert("Action Item can't be blank");
+  }
+  else if (!validateDateOfActionItems()){
+    alert("Date can't be blank for Action Item");
+  }
+  else{
+    form.submit();
+  }
+})
+
+function validateNameOfActionItems() {
+  var Nodelist = document.getElementById('tablebody').querySelectorAll('input[type = "text"]');
+  for(i = 0; i < Nodelist.length; i++){
+    if (Nodelist[i].value == '')
+      return false;
+  }
+  return true;
+}
+function validateDateOfActionItems() {
+  var Nodelist = document.getElementById('tablebody').querySelectorAll('input[enabled]');
+  for(i = 0; i < Nodelist.length; i++){
+    if (Nodelist[i].value == '')
+      return false;
+  }
+  return true;
+}
+</script>
