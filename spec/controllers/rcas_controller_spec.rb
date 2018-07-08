@@ -216,36 +216,44 @@ RSpec.describe RcasController, type: :controller do
   describe 'update' do
     it 'finds the rca to be updated' do
       rca = FactoryBot.create(:rca)
-      patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" } }
+      patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
       expect(assigns(:rca)).to eq(rca)
     end
 
-    it 'finds or create valid user' do
-      rca = FactoryBot.create(:rca)
-      expect do
-        patch :update, params: { id: rca.id, rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
-      end.to change(User, :count).by(1)
+    context 'when all validations are passed' do
+      it 'should find or create valid user' do
+        rca = FactoryBot.create(:rca)
+        expect do
+          patch :update, params: { id: rca.id, rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        end.to change(User, :count).by(1)
 
-      expect do
-        patch :update, params: { id: rca.id, rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
-      end.to change(User, :count).by(0)
+        expect do
+          patch :update, params: { id: rca.id, rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        end.to change(User, :count).by(0)
+      end
+
+      it 'should render the index' do
+        rca = FactoryBot.create(:rca)
+        patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team, name: 'allocations').id }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        expect(response).to redirect_to(rcas_path)
+      end
     end
 
-    it 'renders the index if rca and user both are valid' do
+    it 'renders the edit form if any action item is not valid' do
       rca = FactoryBot.create(:rca)
-      patch :update, params: { id: rca.id, rca: { title: 'fghwaiuf', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team, name: 'allocations').id }, user: { email: "abcd@go-jek.com" } }
-      expect(response).to redirect_to(rcas_path)
+      patch :update, params: { id: rca.id, rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+      expect(response).to render_template(:edit)
     end
 
     it 'renders the edit form if the rca is not valid' do
       rca = FactoryBot.create(:rca)
-      patch :update, params: { id: rca.id, rca: { title: '', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" } }
+      patch :update, params: { id: rca.id, rca: { title: '', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
       expect(response).to render_template(:edit)
     end
 
-    it 'renders the edit form if user is not valid even if rca is valid' do
+    it 'renders the edit form if user is not valid' do
       rca = FactoryBot.create(:rca)
-      patch :update, params: { id: rca.id, rca: { title: 'abcde', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@yahoo.com" } }
+      patch :update, params: { id: rca.id, rca: { title: 'abcde', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@yahoo.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
       expect(response).to render_template(:edit)
     end
 
@@ -253,7 +261,7 @@ RSpec.describe RcasController, type: :controller do
       teams = FactoryBot.create_list(:team, 3)
       rca = FactoryBot.create(:rca)
       teams << rca.team
-      patch :update, params: { id: rca.id, rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' } }
+      patch :update, params: { id: rca.id, rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
       teams << Rca.all.last.team
       expect(assigns(:teams)).to eq(teams)
     end

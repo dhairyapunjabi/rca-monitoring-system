@@ -45,7 +45,23 @@ class RcasController < ApplicationController
     @rca.assign_attributes(rca_params)
     @rca.user = User.find_or_initialize_by(user_params)
     @teams = Team.all.to_a
-    if (@rca.user.update && @rca.update)
+    @actionitems = actionitem_params
+    temporary_action_item = Actionitem.new
+    @actionitems[:list].each do |actionitem|
+      temporary_action_item.assign_attributes(actionitem)
+      temporary_action_item.rca = @rca
+      if !(temporary_action_item.valid?)
+        break
+      end
+    end
+
+    if (temporary_action_item.valid? & @rca.user.valid? & @rca.valid?)
+      @rca.user.update
+      @rca.update
+      @rca.actionitems.delete_all
+      @actionitems[:list].each do |actionitem|
+        @rca.actionitems.create(actionitem)
+      end
       redirect_to rcas_path
     else
       render 'edit'
