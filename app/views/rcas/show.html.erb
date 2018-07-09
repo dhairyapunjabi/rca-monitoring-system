@@ -25,9 +25,7 @@
     <div class = 'row'>
       <p>
         <%= form.label 'Description:', style: 'font-size:20px; color:green;' %><br>
-        <textarea readonly class = 'form-control' rows = '10' cols = '100' style = 'background-color:#FFFFFF;'>
-          <%= @rca.description %>
-        </textarea>
+        <textarea readonly class = 'form-control' rows = '10' cols = '100' style = 'background-color:#FFFFFF;'><%= @rca.description %></textarea>
       </p>
     </div>
 
@@ -35,17 +33,17 @@
       <p>
         <%= form.label 'Action Items:', style: 'font-size:20px; color:green;' %></p>
       <table class = 'table-responsive table-hover'>
-          <thead>
-            <tr>
-              <th style = 'padding-right:50px;'>Name</th>
-              <th style = 'padding-right:50px;'>Status</th>
-              <th style = 'padding-right:50px;'>Complete by</th>
-              <th style = 'padding-right:50px;'>Completed on</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id = 'tablebody'>
-            <% @rca.actionitems.each do |actionitem| %>
+        <thead>
+          <tr>
+            <th style = 'padding-right:50px;'>Name</th>
+            <th style = 'padding-right:50px;'>Status</th>
+            <th style = 'padding-right:50px;'>Complete by</th>
+            <th style = 'padding-right:50px;'>Completed on</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id = 'tablebody'>
+          <% @rca.actionitems.each do |actionitem| %>
             <tr>
               <td style = 'padding-right:50px;'><%= actionitem.name %></td>
               <td style = 'padding-right:50px;' <% if actionitem.status == 'Pending' %> class = 'text-danger' <% else %>class = 'text-success' <% end %> ><%= actionitem.status%></td>
@@ -59,11 +57,13 @@
               <% else %>
                 <td style = 'padding-right:50px;'><%= actionitem.completed_on %></td>
               <% end %>
-              </tr>
-              <% end %>
-          </tbody>
-        </table>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
+
+    <br>
 
     <div class =  'border-top' style = 'border-width:1.5px !important; padding-top:40px'></div>
 
@@ -82,9 +82,29 @@
         <%= @rca.team.name %>
       </p>
     </div>
+
+    <div class =  'border-top' style = 'border-width:1.5px !important; padding-top:40px'></div>
+
+    <div class = 'row'>
+      <p>
+        <%= form.label "Tags", style: 'font-size:20px' %><br>
+        <input type = "text" class = 'form-control'  id = 'tokenfield' style = 'border-top:0; border-right:0; border-left:0; outline:none; box-shadow:none !important' disabled>
+      </p>
+    </div>
   <% end %>
 </div>
 
 <br>
 
 <div class = 'container' style = 'margin:auto'><%= link_to "Edit", edit_rca_path(@rca), class: 'btn btn-info' %></div>
+
+<script>
+
+  var tokens = JSON.parse('<%= raw @rca.tags.to_a.to_json %>')
+for (i = 0; i < tokens.length; i++){
+  tokens[i] = tokens[i].name;
+}
+document.getElementById('tokenfield').value = tokens.toString();
+$('#tokenfield').tokenfield();
+document.querySelector('div[class="tokenfield form-control disabled"]').style.backgroundColor = 'white';
+</script>
