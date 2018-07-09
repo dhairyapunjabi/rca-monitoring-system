@@ -78,6 +78,13 @@
 
     <input type = 'hidden' id = 'list' name = 'actionitem[list]'>
 
+    <div class = 'row'>
+      <p>
+        <%= form.label "Tags", style: 'font-size:20px' %><br>
+        <input name = "tag[list]" type = "text" class = 'form-control' id = 'tokenfield' style = 'border-top:0; border-right:0; border-left:0; outline:none; box-shadow:none !important'>
+      </p>
+    </div>
+
     <div class= 'row'>
       <p>
         <%= form.submit 'Create RCA', class: 'btn btn-success', id: 'submitbutton' %>
@@ -87,6 +94,7 @@
 </div>
 
 <script>
+  $('#tokenfield').tokenfield()
   function createNewActionItem(x) {
     x.style.display = 'none';
     var tablelist = document.querySelectorAll('tr')
