@@ -35,7 +35,6 @@ RSpec.describe RcasController, type: :controller do
       expect(assigns(:rca).user).to be_an_instance_of(User)
     end
 
-
     it 'assigns all teams in an instance variable' do
       teams = FactoryBot.create_list(:team, 3)
       get :new
@@ -57,28 +56,38 @@ RSpec.describe RcasController, type: :controller do
     context 'when all validations are passed' do
       it 'should save newly created valid rca' do
         expect do
-          post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+          post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
         end.to change(Rca, :count).by(1)
       end
 
       it 'should find or create valid user' do
         expect do
-          post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+          post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
         end.to change(User, :count).by(1)
 
         expect do
-          post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+          post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
         end.to change(User, :count).by(0)
       end
 
       it 'should save all action items' do
         expect do
-          post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+          post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
         end.to change(Actionitem, :count).by(2)
       end
 
+      it 'should find or create valid tag' do
+        expect do
+          post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "Ruby, C, Clojure"} }
+        end.to change(Tag, :count).by(3)
+
+        expect do
+          post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "Ruby, CSS, Java"} }
+        end.to change(Tag, :count).by(2)
+      end
+
       it 'should render the index template' do
-        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
         expect(response).to redirect_to(rcas_path)
       end
     end
@@ -87,26 +96,68 @@ RSpec.describe RcasController, type: :controller do
       it "shouldn't create RCA" do
         rca = FactoryBot.create(:rca)
         expect do
-          post :create, params: { id: rca.id, rca: { title: 'adaed', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+          post :create, params: { id: rca.id, rca: { title: 'adaed', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
         end.to change(Rca, :count).by(0)
       end
 
       it "shouldn't create any action item" do
         rca = FactoryBot.create(:rca)
         expect do
-          post :create, params: { id: rca.id, rca: { title: 'daedaed', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+          post :create, params: { id: rca.id, rca: { title: 'daedaed', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
         end.to change(Actionitem, :count).by(0)
       end
 
       it "doesn't create User" do
         rca = FactoryBot.create(:rca)
         expect do
-          post :create, params: { id: rca.id, rca: { title: 'adaed', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+          post :create, params: { id: rca.id, rca: { title: 'adaed', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
+        end.to change(User, :count).by(0)
+      end
+
+      it "shouldn't create any tag" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: 'daedaed', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "Ruby, CSS, Java"} }
+        end.to change(Tag, :count).by(0)
+      end
+
+      it 'should render the new form' do
+        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
+        expect(response).to render_template(:new)
+      end
+    end
+
+    context 'when any tag is invalid' do
+      it "shouldn't create RCA" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: 'adaed', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: " , CSS, Java"} }
+        end.to change(Rca, :count).by(0)
+      end
+
+      it "shouldn't create any action item" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: 'daedaed', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: " , CSS, Java"} }
+        end.to change(Actionitem, :count).by(0)
+      end
+
+      it "shouldn't create any tag" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: 'daedaed', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: " , CSS, Java"} }
+        end.to change(Tag, :count).by(0)
+      end
+
+      it "doesn't create User" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: 'adaed', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: " , CSS, Java"} }
         end.to change(User, :count).by(0)
       end
 
       it 'should render the new form' do
-        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: " , CSS, Java"} }
         expect(response).to render_template(:new)
       end
     end
@@ -115,27 +166,34 @@ RSpec.describe RcasController, type: :controller do
       it "doesn't create RCA" do
         rca = FactoryBot.create(:rca)
         expect do
-          post :create, params: { id: rca.id, rca: { title: '', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+          post :create, params: { id: rca.id, rca: { title: '', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
         end.to change(Rca, :count).by(0)
       end
 
       it "shouldn't create any action" do
         rca = FactoryBot.create(:rca)
         expect do
-          post :create, params: { id: rca.id, rca: { title: '', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+          post :create, params: { id: rca.id, rca: { title: '', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
         end.to change(Actionitem, :count).by(0)
       end
 
       it "doesn't create User" do
         rca = FactoryBot.create(:rca)
         expect do
-          post :create, params: { id: rca.id, rca: { title: '', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+          post :create, params: { id: rca.id, rca: { title: '', description: 'vacb', status: 'ty', team_id: 321 }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
         end.to change(User, :count).by(0)
       end
 
       it 'should render the new form' do
-        post :create, params: { rca: { title: '', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        post :create, params: { rca: { title: '', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
         expect(response).to render_template(:new)
+      end
+
+      it "shouldn't create any tag" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: '', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jek.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "Ruby, CSS, Java"} }
+        end.to change(Tag, :count).by(0)
       end
     end
 
@@ -143,43 +201,55 @@ RSpec.describe RcasController, type: :controller do
       it "shouldn't create User" do
         rca = FactoryBot.create(:rca)
         expect do
-          post :create, params: { id: rca.id, rca: { title: 'ikbea', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jk.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+          post :create, params: { id: rca.id, rca: { title: 'ikbea', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jk.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
         end.to change(User, :count).by(0)
       end
 
       it "shouldn't create any Action item" do
         rca = FactoryBot.create(:rca)
         expect do
-          post :create, params: { id: rca.id, rca: { title: 'ikbea', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jk.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+          post :create, params: { id: rca.id, rca: { title: 'ikbea', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jk.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
         end.to change(Actionitem, :count).by(0)
       end
 
       it "shouldn't create Rca" do
         rca = FactoryBot.create(:rca)
         expect do
-          post :create, params: { id: rca.id, rca: { title: 'ikbea', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jk.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+          post :create, params: { id: rca.id, rca: { title: 'ikbea', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@go-jk.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
         end.to change(Rca, :count).by(0)
       end
 
       it 'should render the new form' do
-        post :create, params: { rca: { title: 'fadfa', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@gmail.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+        post :create, params: { rca: { title: 'fadfa', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@gmail.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
         expect(response).to render_template(:new)
+      end
+
+      it "shouldn't create any tag" do
+        rca = FactoryBot.create(:rca)
+        expect do
+          post :create, params: { id: rca.id, rca: { title: 'daedaed', description: 'vacb', status: 'ty', team_id: FactoryBot.create(:team).id }, user: { email: "abcd@gmail.com" }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "Ruby, CSS, Java"} }
+        end.to change(Tag, :count).by(0)
       end
     end
 
     it 'associates created user with the created rca' do
-      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
       expect(Rca.all.last.user).to eq(User.all.last)
     end
 
     it 'associates created action items with the created rca' do
-      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
       expect(Actionitem.all.to_a.last(2)).to eq(Rca.all.last.actionitems)
+    end
+
+    it 'associates created tags with the created rca' do
+      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "Ruby, CSS, Java"} }
+      expect(Tag.all.to_a.last(3)).to eq(Rca.all.last.tags)
     end
 
     it 'assigns all teams in a instance variable' do
       teams = FactoryBot.create_list(:team, 3)
-      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" } }
+      post :create, params: { rca: { title: 'First rca', description: 'this is my first rca', status: 'Completed', team_id: FactoryBot.create(:team).id }, user: { email: 'abcd@go-jek.com' }, actionitem: { list: "[{\"name\":\"root cause\",\"status\":\"Pending\",\"complete_by\":\"2018-07-25\",\"completed_on\":\"\"},{\"name\":\"segmentation fault\",\"status\":\"Completed\",\"complete_by\":\"\",\"completed_on\":\"2018-07-04\"}]" }, tag: { list: "" } }
       teams << Rca.all.last.team
       expect(assigns(:teams)).to eq(teams)
     end
