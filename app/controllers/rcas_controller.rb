@@ -39,6 +39,7 @@ class RcasController < ApplicationController
         @rca.actionitems.create(actionitem)
       end
       @tags.each do |tag_name|
+        tag_name.downcase!
         @rca.tags << Tag.find_or_create_by(name: tag_name)
       end
       redirect_to rcas_path

@@ -1,3 +1,27 @@
+<style type = 'text/css'>
+  .ui-menu {
+    color: black;
+    border-radius: 0px;
+    border: 1px solid #454545;
+    list-style: none;
+    margin: 0px;
+    opacity: 1;
+    max-height: 60px;
+    background: white;
+    overflow-y: auto;
+    text-align: left;
+    padding-left: 0px;
+  }
+  .ui-menu-item:hover {
+    background: rgb(182,192,200);
+  }
+  .ui-helper-hidden-accessible {
+    display: none;
+  }
+  .tokenfield{
+    width: 300px;
+  }
+</style>
 <div class = 'container border border-dark' style = "border-width: 5px !important; font-family: 'Verdana'; padding:50px; padding-left:75px">
   <h2>New RCA</h2>
   <div class =  'border-top border-danger' style = 'border-width:3px !important; padding-top:40px'></div>
@@ -53,6 +77,8 @@
       </table>
     </div>
 
+    <br>
+
     <div class = 'row'>
       <p>
         <%= form.label :status, style: 'font-size:20px'%><br>
@@ -74,16 +100,17 @@
       </p>
     </div>
 
-    <br><br>
-
     <input type = 'hidden' id = 'list' name = 'actionitem[list]'>
+    <br>
 
     <div class = 'row'>
       <p>
         <%= form.label "Tags", style: 'font-size:20px' %><br>
-        <input name = "tag[list]" type = "text" class = 'form-control' id = 'tokenfield' style = 'border-top:0; border-right:0; border-left:0; outline:none; box-shadow:none !important'>
+        <input name = "tag[list]" type = "text" data-toggle = 'tooltip' title = 'abcd' class = 'form-control' placeholder = 'Enter tags(optional)' id = 'tokenfield' style = 'border-top:0; border-right:0; border-left:0; outline:none; box-shadow:none !important'>
       </p>
     </div>
+
+    <br><br>
 
     <div class= 'row'>
       <p>
@@ -94,7 +121,34 @@
 </div>
 
 <script>
-  $('#tokenfield').tokenfield()
+  var tokens = JSON.parse('<%= raw Tag.all.to_a.to_json %>')
+  for (i = 0; i < tokens.length; i++){
+    tokens[i] = tokens[i].name;
+  }
+
+  $('#tokenfield').tokenfield({
+    autocomplete: {
+      source: tokens,
+      delay: 100,
+      minLength: 1
+    },
+    showAutocompleteOnFocus: false
+  })
+
+$('#tokenfield').on('tokenfield:createtoken', function (event) {
+    var existingTokens = $(this).tokenfield('getTokens');
+    $.each(existingTokens, function(index, token) {
+      if (token.value.toLowerCase() === event.attrs.value.toLowerCase()){
+        event.preventDefault();
+        alert('You have already used this tag');
+      }
+    });
+  if(event.attrs.value.length > 25){
+    event.preventDefault();
+    alert('Tag is too long (maximum length is 25 characters)');
+  }
+})
+
   function createNewActionItem(x) {
     x.style.display = 'none';
     var tablelist = document.querySelectorAll('tr')

@@ -4,6 +4,7 @@
 //= require rails-ujs
 //= require turbolinks
 //= require jquery.easing
-//= require bootstrap-tokenfield
 //= require datatables
+//= require jquery-ui/widgets/autocomplete
+//= require bootstrap-tokenfield
 //= require_tree .

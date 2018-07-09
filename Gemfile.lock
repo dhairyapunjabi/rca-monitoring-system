@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/jquery-ui-rails/jquery-ui-rails.git
+  revision: 0b22d46622c6615334cdfcd86d0d3ea22d9841ca
+  specs:
+    jquery-ui-rails (6.0.1)
+      railties (>= 3.2.16)
+
+GIT
   remote: https://github.com/mongoid/mongoid-rspec.git
   revision: e324e13e075e5ec7114414c8c3ec11c0978fbcaa
   specs:
@@ -313,6 +320,7 @@ DEPENDENCIES
   jquery-datatables (~> 1.10, >= 1.10.19)
   jquery-easing-rails (~> 0.0.2)
   jquery-rails
+  jquery-ui-rails!
   listen (>= 3.0.5, < 3.2)
   mongoid (~> 7.0, >= 7.0.1)
   mongoid-rspec!
