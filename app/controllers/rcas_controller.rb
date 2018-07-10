@@ -58,6 +58,7 @@ class RcasController < ApplicationController
     @rca.assign_attributes(rca_params)
     @rca.user = User.find_or_initialize_by(user_params)
     @teams = Team.all.to_a
+    @tags = tag_params
     @actionitems = actionitem_params
     temporary_action_item = Actionitem.new
     @actionitems[:list].each do |actionitem|
@@ -68,12 +69,33 @@ class RcasController < ApplicationController
       end
     end
 
-    if (temporary_action_item.valid? & @rca.user.valid? & @rca.valid?)
+    temporary_tag = Tag.new(name: "Ruby")
+    @tags.each do |tag_name|
+      temporary_tag.name = tag_name
+      if !(temporary_tag.valid?)
+        break
+      end
+    end
+
+
+    if (temporary_tag.valid? & temporary_action_item.valid? & @rca.user.valid? & @rca.valid?)
       @rca.user.update
       @rca.update
       @rca.actionitems.delete_all
       @actionitems[:list].each do |actionitem|
         @rca.actionitems.create(actionitem)
+      end
+
+      @rca.tag_ids.each do |tag_id|
+        tag = Tag.find_by(id: tag_id)
+        tag.rca_ids.delete(@rca.id)
+        tag.update
+      end
+
+      @rca.tag_ids.clear
+      @tags.each do |tag_name|
+        tag_name.downcase!
+        @rca.tags << Tag.find_or_create_by(name: tag_name)
       end
       redirect_to rcas_path
     else

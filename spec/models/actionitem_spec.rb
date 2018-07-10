@@ -30,7 +30,7 @@ RSpec.describe Actionitem, type: :model do
     end
 
     it 'should validate presence of complete_by if and only if status is Pending' do
-      actionitem1 = FactoryBot.build(:actionitem)
+      actionitem1 = FactoryBot.build(:actionitem, complete_by: '')
       actionitem1.valid?
       expect(actionitem1.errors[:complete_by]).to include("can't be blank")
       actionitem2 = FactoryBot.build(:actionitem, status: "Completed")
@@ -45,7 +45,7 @@ RSpec.describe Actionitem, type: :model do
     end
 
     it 'should validate presence of completed_on if and only if status is Completed' do
-      actionitem1 = FactoryBot.build(:actionitem, status: "Completed")
+      actionitem1 = FactoryBot.build(:actionitem, status: "Completed", completed_on: '')
       actionitem1.valid?
       expect(actionitem1.errors[:completed_on]).to include("can't be blank")
       actionitem2 = FactoryBot.build(:actionitem)
