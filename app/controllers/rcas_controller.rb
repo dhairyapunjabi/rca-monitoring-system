@@ -131,7 +131,7 @@ class RcasController < ApplicationController
   end
 
   def tag_params
-    params.fetch(:tag).permit(:list)
+    params.require(:tag).permit(:list)
     params[:tag][:list].split(", ")
   end
 end
