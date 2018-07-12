@@ -1,5 +1,10 @@
 image: ruby:2.5.0
 
+stages:
+  - test
+  - compress
+  - package
+  - deploy_integration_docker
 services:
  - mongo:3.6
 
@@ -13,8 +18,9 @@ before_script:
  - bundle install
 
 test:
- script:
- - bundle exec rspec
+  stage: test
+  script:
+    - bundle exec rspec
 
 compress:
   stage: compress
