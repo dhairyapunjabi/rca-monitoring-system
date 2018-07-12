@@ -1,6 +1,7 @@
 class RcasController < ApplicationController
   def index
     @rcas = Rca.all.to_a
+    @rcas = @rcas.sort { |rca1, rca2| rca2.created_at <=> rca1.created_at }
   end
 
   def new

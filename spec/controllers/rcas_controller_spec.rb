@@ -7,8 +7,15 @@ RSpec.describe RcasController, type: :controller do
   end
 
   describe 'index' do
-    it 'assigns all rcas in an instance variable' do
-      rcas = FactoryBot.create_list(:rca, 3)
+    it 'assigns all rcas in an instance variable order by created at' do
+      rcas = Array.new
+      rca1 = FactoryBot.create(:rca)
+      rcas << rca1
+      rca2 = FactoryBot.create(:rca)
+      rcas << rca2
+      rca3 = FactoryBot.create(:rca)
+      rcas << rca3
+      rcas = rcas.sort { |rca| rca.created_at }
       get :index
       expect(assigns(:rcas)).to eq(rcas)
     end
