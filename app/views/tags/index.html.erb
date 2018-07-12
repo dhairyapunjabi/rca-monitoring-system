@@ -9,11 +9,13 @@
         <thead>
           <tr>
             <th>Tag</th>
+            <th>Count</th>
           </tr>
         </thead>
         <tfoot>
           <tr>
             <th>Tag</th>
+            <th>Count</th>
           </tr>
         </tfoot>
         <tbody>
@@ -22,6 +24,9 @@
               <td>
               <i class = 'fa fa-tag'></i>
               <%= link_to tag.name, tag_path(tag), method: :get %></td>
+            <td>
+              <i class = 'fa fa-times'></i>
+              <%= link_to tag.rcas.count, tag_path(tag), method: :get %></td>
             </tr>
           <% end %>
         </tbody>
