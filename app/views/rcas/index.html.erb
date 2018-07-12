@@ -11,6 +11,8 @@
               <th>Team</th>
               <th>Created by</th>
               <th>Status</th>
+              <th>Created</th>
+              <th>Last Activity</th>
             </tr>
           </thead>
           <tfoot>
@@ -19,6 +21,8 @@
               <th>Team</th>
               <th>Created by</th>
               <th>Status</th>
+              <th>Created</th>
+              <th>Last Activity</th>
             </tr>
           </tfoot>
           <tbody>
@@ -28,6 +32,8 @@
                 <td><%= rca.team.name %></td>
                 <td><%= rca.user.email %></td>
                 <td><%= rca.status %></td>
+                <td><%= distance_of_time_in_words(rca.created_at, Time.now) %></td>
+                <td><%= distance_of_time_in_words(rca.updated_at, Time.now) %></td>
               </tr>
             <% end %>
           </tbody>

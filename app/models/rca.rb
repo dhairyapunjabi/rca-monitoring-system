@@ -1,6 +1,7 @@
 # This defines data-type and validations of a Rca document.
 class Rca
   include Mongoid::Document
+  include Mongoid::Timestamps
   belongs_to :team
   belongs_to :user
   has_many :actionitems

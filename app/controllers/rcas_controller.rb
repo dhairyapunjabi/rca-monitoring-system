@@ -79,6 +79,7 @@ class RcasController < ApplicationController
 
 
     if (temporary_tag.valid? & temporary_action_item.valid? & @rca.user.valid? & @rca.valid?)
+      @rca.updated_at = Time.now
       @rca.user.update
       @rca.update
       @rca.actionitems.delete_all
