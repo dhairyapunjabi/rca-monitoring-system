@@ -7,8 +7,15 @@ RSpec.describe TeamsController, type: :controller do
   end
 
   describe 'index' do
-    it 'assigns all teams in an instance variable' do
-      teams = FactoryBot.create_list(:team, 3)
+    it 'assigns all teams in an instance variable ordered by name' do
+      teams = Array.new
+      team1 = FactoryBot.create(:team, name: "Lambda")
+      teams << team1
+      team2 = FactoryBot.create(:team, name: "Design")
+      teams << team2
+      team3 = FactoryBot.create(:team, name: "Allocations")
+      teams << team3
+      teams = teams.sort { |team1, team2| team1.name <=> team2.name }
       get :index
       expect(assigns(:teams)).to eq(teams)
     end
