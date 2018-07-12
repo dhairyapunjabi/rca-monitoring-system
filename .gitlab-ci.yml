@@ -11,6 +11,14 @@ services:
 variables:
  MONGO_URI: “mongodb://mongo/rca_monitoring_system_test”
  HOST_NAME: mongo
+ APP_BASE_DOCKER_IMAGE: artifactory-gojek.golabs.io:6555/app-mri:2.5.0
+ APP_TYPE: "mri"
+ 
+cache:
+ key: ${CI_COMMIT_REF_SLUG}
+ paths:
+  - vendor
+
 
 before_script:
  - apt-get update
