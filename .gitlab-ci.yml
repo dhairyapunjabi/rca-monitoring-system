@@ -13,7 +13,8 @@ variables:
  HOST_NAME: mongo
  APP_BASE_DOCKER_IMAGE: artifactory-gojek.golabs.io:6555/app-mri:2.5.0
  APP_TYPE: "mri"
- 
+ OVERRIDE_CI_PROJECT_NAME: "ledger"
+
 cache:
  key: ${CI_COMMIT_REF_SLUG}
  paths:
