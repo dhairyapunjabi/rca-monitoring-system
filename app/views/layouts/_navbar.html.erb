@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-  <div class="navbar-brand"><%= link_to "RCA-Monitoring-System", root_path, method: :get %></div>
+  <div class="navbar-brand"><%= link_to "RCA-Monitoring-System", root_path, method: :get, style: 'color: OldLace;' %></div>
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -7,26 +7,26 @@
     <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Create RCA">
         <div class="nav-link">
-          <%= link_to new_rca_path do %>
+          <%= link_to new_rca_path, style: 'color: OldLace;' do %>
             <i class="fa fa-solid fa-plus-circle"></i>
           <% end %>
-          <span class="nav-link-text"><%= link_to "New RCA", new_rca_path %></span>
+          <span class="nav-link-text"><%= link_to "New RCA", new_rca_path, style: 'color: OldLace;' %></span>
         </div>
       </li>
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="All teams">
         <div class="nav-link">
-          <%= link_to teams_path, method: :get do %>
+          <%= link_to teams_path, method: :get, style: 'color: OldLace;' do %>
             <i class = 'fa fa-solid fa-users'></i>
           <% end %>
-          <span class="nav-link-text"><%= link_to "Teams", teams_path, method: :get %></span>
+          <span class="nav-link-text"><%= link_to "Teams", teams_path, method: :get, style: 'color: OldLace;' %></span>
         </div>
       </li>
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="All tags">
         <div class="nav-link">
-          <%= link_to tags_path, method: :get do %>
+          <%= link_to tags_path, method: :get, style: 'color: OldLace;' do %>
             <i class="fa fa-solid fa-tags"></i>
           <% end %>
-          <span class="nav-link-text"><%= link_to "Tags", tags_path, method: :get  %></span>
+          <span class="nav-link-text"><%= link_to "Tags", tags_path, method: :get, style: 'color: OldLace;' %></span>
         </div>
       </li>
     </ul>
