@@ -28,7 +28,6 @@ compress:
     PACKAGE_JARS: "false"
   script:
     - apt-get install libffi-dev
-    - cp ./config/application.yml.sample ./config/application.yml
     - ASSETS_PRECOMPILE="true" compress
   artifacts:
     name: "${CI_PROJECT_NAME}-${APP_VERSION}-${CI_BUILD_REF}"
