@@ -15,3 +15,46 @@ before_script:
 test:
  script:
  - bundle exec rspec
+
+compress:
+  stage: compress
+  variables:
+    PACKAGE_JARS: "false"
+  script:
+    - apt-get install libffi-dev
+    - cp ./config/application.yml.sample ./config/application.yml
+    - ASSETS_PRECOMPILE="true" compress
+  artifacts:
+    name: "${CI_PROJECT_NAME}-${APP_VERSION}-${CI_BUILD_REF}"
+    paths:
+      - ./pkg
+      - ./version.txt
+    expire_in: 3 days
+  only:
+   - master
+   - tags
+
+package:
+  stage: package
+  script:
+    - package
+  tags:
+    - package
+  only:
+    - master
+    - tags
+
+docker_deploy_integration_app:
+  stage: deploy_integration_docker
+  variables:
+    APPLICATION_NAME: ledger-server
+    DATACENTER_NAME: gojek-integration
+  environment:
+    name: integration
+  script:
+    - deploy_containers
+  only:
+    - master
+    - tags
+  when: manual
+
