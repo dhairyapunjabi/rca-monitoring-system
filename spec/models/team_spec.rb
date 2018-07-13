@@ -11,6 +11,10 @@ RSpec.describe Team, type: :model do
     it 'of name is string' do
       is_expected.to have_field(:name).of_type(String)
     end
+
+    it 'of slack_webhook_url is string' do
+      is_expected.to have_field(:slack_webhook_url).of_type(String)
+    end
   end
 
   describe 'validation' do
