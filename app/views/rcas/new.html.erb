@@ -140,7 +140,6 @@ $('#tokenfield').on('tokenfield:createtoken', function (event) {
     $.each(existingTokens, function(index, token) {
       if (token.value.toLowerCase() === event.attrs.value.toLowerCase()){
         event.preventDefault();
-        alert('You have already used this tag');
       }
     });
   if(event.attrs.value.length > 25){
