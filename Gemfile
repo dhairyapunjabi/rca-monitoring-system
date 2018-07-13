@@ -22,6 +22,7 @@ gem 'jquery-easing-rails', '~> 0.0.2'
 gem 'jquery-datatables', '~> 1.10', '>= 1.10.19'
 gem 'jquery-ui-rails', github: 'jquery-ui-rails/jquery-ui-rails'
 gem 'clockwork', '~> 2.0', '>= 2.0.3'
+gem "slack-notifier"
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
