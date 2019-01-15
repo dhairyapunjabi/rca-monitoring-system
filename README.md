@@ -4,19 +4,19 @@ The RCA monitoring system is an application that will enable the users to manage
 We use ruby version '2.5.0'. You should install it in your systems in
 any way you feel comfortable. If you don't know how to do it, follow the
 steps below:-
-```
+```console
 >brew install rbenv
 >rbenv init
 >rbenv install 2.5.0
 >rbenv global 2.5.0
 ```
 ## Installing MongoDB
-```
+```console
 >brew update
 >brew install mongodb
 >sudo mkdir -p /data/db
 > # enter your password
->sudo chown -R `id-un` /data/db
+>sudo chown -R `id -un` /data/db
 > # enter your password
 ```
 ### Starting Mongo Daemon
